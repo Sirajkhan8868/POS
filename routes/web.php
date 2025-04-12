@@ -14,13 +14,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-// Route to show the home page (could be the welcome page or a custom view)
 Route::get('/', function () {
-    return view('welcome');  // or you can point this to another view if needed
+    return view('welcome');
 });
 
-// Authentication routes
 Auth::routes();
 
-// Redirect home route to HomeController
 Route::get('/home', [HomeController::class, 'index'])->name('home');

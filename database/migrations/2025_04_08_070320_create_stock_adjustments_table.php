@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('stock_adjustments', function (Blueprint $table) {
             $table->id();
+            $table->string('reference');
+            $table->date('date');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

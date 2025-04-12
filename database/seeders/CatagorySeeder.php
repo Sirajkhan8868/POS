@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Catagory;
 use Illuminate\Database\Seeder;
 
 class CatagorySeeder extends Seeder
@@ -14,6 +14,27 @@ class CatagorySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Catagory::insert([
+            [
+                'category_code' => 'CA_16',
+                'category_name' => 'Notebooks',
+                'product_count' => 2
+            ],
+            [
+                'category_code' => 'CB_13',
+                'category_name' => 'Books',
+                'product_count' => 4
+            ],
+            [
+                'category_code' => 'CB_15',
+                'category_name' => 'Dairy',
+                'product_count' => 5
+            ],
+            [
+                'category_code' => 'CB_17',
+                'category_name' => 'Bed',
+                'product_count' => 6
+            ],
+        ]);
     }
 }

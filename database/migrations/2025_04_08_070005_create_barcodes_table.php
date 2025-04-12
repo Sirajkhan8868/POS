@@ -15,8 +15,12 @@ return new class extends Migration
     {
         Schema::create('barcodes', function (Blueprint $table) {
             $table->id();
+            $table->string('product_name');
+            $table->string('product_code')->unique();
+            $table->unsignedInteger('quantity');
             $table->timestamps();
         });
+
     }
 
     /**
