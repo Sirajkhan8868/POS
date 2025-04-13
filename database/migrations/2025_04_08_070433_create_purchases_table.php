@@ -15,6 +15,14 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
+            $table->string('reference')->unique();
+            $table->string('customer');
+            $table->date('date');
+            $table->decimal('tax', 8, 2)->default(0);
+            $table->decimal('discount', 8, 2)->default(0);
+            $table->decimal('shipping', 8, 2)->default(0);
+            $table->decimal('total_amount', 10, 2)->default(0);
+            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->timestamps();
         });
     }

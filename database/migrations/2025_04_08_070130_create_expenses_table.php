@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->string('reference')->unique();
+            $table->string('category');
+            $table->decimal('amount', 10, 2);
+            $table->string('details');
             $table->timestamps();
         });
+
     }
 
     /**

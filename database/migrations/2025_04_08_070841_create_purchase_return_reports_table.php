@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('purchase_return_reports', function (Blueprint $table) {
             $table->id();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('set null');
+            $table->enum('status', ['pending', 'completed', 'cancelled'])->nullable();
+            $table->enum('payment_status', ['unpaid', 'partial', 'paid'])->nullable();
             $table->timestamps();
         });
     }
