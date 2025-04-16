@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
-            $table->string('customer');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->decimal('tax', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);

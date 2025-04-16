@@ -1,85 +1,62 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\StockAdjustment;
+use App\Models\StockAdjustmentItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class StockAdjustmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $adjustments = StockAdjustment::with('items')->get();
+        return view('stock_adjustments.index', compact('adjustments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $products = Product::all();
+        return view('stock_adjustments.create', compact('products'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'reference' => 'required|unique:stock_adjustments',
+            'date' => 'required|date',
+            'product_id.*' => 'required',
+            'quantity.*' => 'required|numeric',
+            'type.*' => 'required|in:increase,decrease',
+        ]);
+
+        $adjustment = StockAdjustment::create($request->only('reference', 'date', 'note'));
+
+        foreach ($request->product_id as $index => $productId) {
+            StockAdjustmentItem::create([
+                'adjustment_id' => $adjustment->id,
+                'product_id' => $productId,
+                'stock' => $request->stock[$index],
+                'code' => $request->code[$index],
+                'quantity' => $request->quantity[$index],
+                'type' => $request->type[$index],
+            ]);
+        }
+
+        return redirect()->route('stock-adjustments.index')->with('success', 'Stock Adjustment created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\StockAdjustment  $stockAdjustment
-     * @return \Illuminate\Http\Response
-     */
     public function show(StockAdjustment $stockAdjustment)
     {
-        //
+        $stockAdjustment->load('items.product');
+        return view('stock_adjustments.show', compact('stockAdjustment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\StockAdjustment  $stockAdjustment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(StockAdjustment $stockAdjustment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\StockAdjustment  $stockAdjustment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, StockAdjustment $stockAdjustment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\StockAdjustment  $stockAdjustment
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(StockAdjustment $stockAdjustment)
     {
-        //
+        $stockAdjustment->items()->delete();
+        $stockAdjustment->delete();
+
+        return redirect()->route('stock-adjustments.index')->with('success', 'Stock Adjustment deleted.');
     }
 }

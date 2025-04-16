@@ -7,79 +7,53 @@ use Illuminate\Http\Request;
 
 class BarcodeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $barcodes = Barcode::all();
+        return view('barcodes.index', compact('barcodes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('barcodes.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_name' => 'required',
+            'product_code' => 'required|unique:barcodes',
+            'quantity' => 'required|integer',
+            'barcode_print' => 'required|in:barcode,qr_code',
+        ]);
+
+        Barcode::create($request->all());
+
+        return redirect()->route('barcodes.index')->with('success', 'Barcode created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Barcode  $barcode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Barcode $barcode)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Barcode  $barcode
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Barcode $barcode)
     {
-        //
+        return view('barcodes.edit', compact('barcode'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Barcode  $barcode
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Barcode $barcode)
     {
-        //
+        $request->validate([
+            'product_name' => 'required',
+            'product_code' => 'required|unique:barcodes,product_code,' . $barcode->id,
+            'quantity' => 'required|integer',
+            'barcode_print' => 'required|in:barcode,qr_code',
+        ]);
+
+        $barcode->update($request->all());
+
+        return redirect()->route('barcodes.index')->with('success', 'Barcode updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Barcode  $barcode
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Barcode $barcode)
     {
-        //
+        $barcode->delete();
+        return redirect()->route('barcodes.index')->with('success', 'Barcode deleted successfully.');
     }
 }

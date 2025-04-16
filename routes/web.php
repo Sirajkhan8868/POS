@@ -1,7 +1,13 @@
 <?php
 
+use App\Http\Controllers\BarcodeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseReturnController;
+use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\StockAdjustmentController;
 
 /*
 |---------------------------------------------------------------------------
@@ -21,3 +27,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::resource('products', ProductController::class);
+Route::resource('barcodes', BarcodeController::class);
+Route::resource('stock-adjustments', StockAdjustmentController::class);
+Route::resource('quotations', QuotationController::class);
+Route::resource('purchases', PurchaseController::class);
+Route::resource('purchase-returns', PurchaseReturnController::class);
+
+
+
+
+

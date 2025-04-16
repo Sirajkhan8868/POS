@@ -184,22 +184,22 @@
             </a>
             <ul class="collapse list-unstyled" id="usersMenu" data-bs-parent="#sidebarMenu">
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="">
                         <i class="fas fa-th-large m-2"></i> Categories
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('products.create') }}">
                         <i class="fas fa-plus-circle m-2"></i> Create Products
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('products.index') }}">
                         <i class="fas fa-box-open m-2"></i> All Products
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('barcodes.create') }}">
                         <i class="fas fa-barcode m-2"></i> Barcode Print
                     </a>
                 </li>
@@ -213,15 +213,17 @@
             </a>
             <ul class="collapse list-unstyled" id="productsMenu">
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('stock-adjustments.create') }}">
                         <i class="fas fa-sliders-h m-1"></i> <span class="ms-2">Create Adjustment</span>
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('stock-adjustments.index') }}">
                         <i class="fas fa-list-alt m-1"></i> <span class="ms-2">All Adjustments</span>
                     </a>
                 </li>
+            </ul>
+
             </ul>
         </li>
 
@@ -232,15 +234,16 @@
             </a>
             <ul class="collapse list-unstyled" id="analyticsMenu" data-bs-parent="#sidebarMenu">
                 <li>
-                    <a class="nav-link ms-4" href="#">
-                        <i class="fas fa-file-signature"></i> <span class="ms-2">Create Quotation</span>
+                    <a class="nav-link ms-4" href="{{ route('quotations.create') }}">
+                        <i class="fas fa-file-invoice m-2"></i> Create Quotation
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
-                        <i class="fas fa-file-alt"></i> <span class="ms-2">All Quotations</span>
+                    <a class="nav-link ms-4" href="{{ route('quotations.index') }}">
+                        <i class="fas fa-list m-2"></i> All Quotations
                     </a>
                 </li>
+
             </ul>
         </li>
 
@@ -249,10 +252,12 @@
                 <i class="fas fa-shopping-cart icon"></i> Purchases <i class="fas fa-chevron-down ms-auto"></i>
             </a>
             <ul class="collapse list-unstyled" id="purchasesMenu">
-                <li><a class="nav-link ms-4" href="#"><i class="fas fa-plus-circle m-2"></i> Create Purchase</a></li>
-                <li><a class="nav-link ms-4" href="#"><i class="fas fa-list m-2"></i> All Purchases</a></li>
+                <li><a class="nav-link ms-4" href="{{ route('purchases.create') }}"><i class="fas fa-plus-circle m-2"></i> Create Purchase</a></li>
+
+                <li><a class="nav-link ms-4" href="{{ route('purchases.index') }}"><i class="fas fa-list m-2"></i> All Purchases</a></li>
             </ul>
         </li>
+
 
         <li class="nav-item p-2">
             <a class="nav-link" data-bs-toggle="collapse" href="#purchaseReturnMenu">
@@ -260,18 +265,17 @@
             </a>
             <ul class="collapse list-unstyled" id="purchaseReturnMenu">
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('purchase-returns.create') }}">
                         <i class="fas fa-plus-circle m-2"></i> Create Purchase Return
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('purchase-returns.index') }}">
                         <i class="fas fa-list m-2"></i> All Purchase Returns
                     </a>
                 </li>
             </ul>
         </li>
-
 
         <li class="nav-item p-2">
             <a class="nav-link" data-bs-toggle="collapse" href="#salesMenu">

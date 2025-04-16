@@ -1,35 +1,58 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Controllers;
 
-return new class extends Migration
+use App\Models\Barcode;
+use Illuminate\Http\Request;
+
+class BarcodeController extends Controller
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function index()
     {
-        Schema::create('barcodes', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_name');
-            $table->string('product_code')->unique();
-            $table->unsignedInteger('quantity');
-            $table->timestamps();
-        });
-
+        $barcodes = Barcode::all();  // Get all barcodes
+        return view('barcodes.index', compact('barcodes'));
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function create()
     {
-        Schema::dropIfExists('barcodes');
+        return view('barcodes.create');  // Return the barcode creation form
     }
-};
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_name' => 'required',
+            'product_code' => 'required|unique:barcodes',
+            'quantity' => 'required|integer',
+        ]);
+
+        Barcode::create($request->all());  // Create a new barcode record
+
+        return redirect()->route('barcodes.index')->with('success', 'Barcode created successfully.');
+    }
+
+    public function edit(Barcode $barcode)
+    {
+        return view('barcodes.edit', compact('barcode'));  // Return the edit form with barcode data
+    }
+
+    public function update(Request $request, Barcode $barcode)
+    {
+        $request->validate([
+            'product_name' => 'required',
+            'product_code' => 'required|unique:barcodes,product_code,' . $barcode->id,
+            'quantity' => 'required|integer',
+        ]);
+
+        $barcode->update($request->all());  // Update the barcode record
+
+        return redirect()->route('barcodes.index')->with('success', 'Barcode updated successfully.');
+    }
+
+    public function destroy(Barcode $barcode)
+    {
+        $barcode->delete();  // Delete the barcode record
+
+        return redirect()->route('barcodes.index')->with('success', 'Barcode deleted successfully.');
+    }
+}

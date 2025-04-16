@@ -7,5 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quotation extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'reference', 'customer', 'date', 'tax', 'discount',
+        'shipping', 'total_amount', 'status'
+    ];
+
+    public function items()
+    {
+        return $this->hasMany(QuotationItem::class);
+    }
 }
+
