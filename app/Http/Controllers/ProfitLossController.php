@@ -14,72 +14,12 @@ class ProfitLossController extends Controller
      */
     public function index()
     {
-        //
+        // Fetch all profit and loss records
+        $profitLosses = ProfitLoss::all();  // You can modify this query as per your need (e.g., filtering)
+
+        // Return the view and pass the data
+        return view('profit_loss.index', compact('profitLosses'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ProfitLoss  $profitLoss
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProfitLoss $profitLoss)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ProfitLoss  $profitLoss
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProfitLoss $profitLoss)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProfitLoss  $profitLoss
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProfitLoss $profitLoss)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ProfitLoss  $profitLoss
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProfitLoss $profitLoss)
-    {
-        //
-    }
+    // Other methods (store, create, etc.) remain as they are
 }

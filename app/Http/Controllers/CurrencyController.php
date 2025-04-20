@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Currency;
@@ -7,79 +6,53 @@ use Illuminate\Http\Request;
 
 class CurrencyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $currencies = Currency::all();
+        return view('currencies.index', compact('currencies'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('currencies.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'currency_name' => 'required',
+            'code' => 'required|size:3|unique:currencies',
+            'symbol' => 'required',
+            'thousand_operator' => 'required',
+            'decimal_operator' => 'required'
+        ]);
+
+        Currency::create($request->all());
+        return redirect()->route('currencies.index')->with('success', 'Currency added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Currency  $currency
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Currency $currency)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Currency  $currency
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Currency $currency)
     {
-        //
+        return view('currencies.edit', compact('currency'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Currency  $currency
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Currency $currency)
     {
-        //
+        $request->validate([
+            'currency_name' => 'required',
+            'code' => 'required|size:3|unique:currencies,code,' . $currency->id,
+            'symbol' => 'required',
+            'thousand_operator' => 'required',
+            'decimal_operator' => 'required'
+        ]);
+
+        $currency->update($request->all());
+        return redirect()->route('currencies.index')->with('success', 'Currency updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Currency  $currency
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Currency $currency)
     {
-        //
+        $currency->delete();
+        return redirect()->route('currencies.index')->with('success', 'Currency deleted successfully.');
     }
 }

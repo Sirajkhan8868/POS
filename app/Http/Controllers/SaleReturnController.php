@@ -1,85 +1,46 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\SaleReturn;
+use App\Models\SaleReturnItem;
 use Illuminate\Http\Request;
 
 class SaleReturnController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $returns = SaleReturn::with('items')->latest()->get();
+        return view('sale_returns.index', compact('returns'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('sale_returns.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'reference' => 'required|unique:sale_returns',
+            'customer' => 'required',
+            'date' => 'required|date',
+            'tax' => 'numeric',
+            'discount' => 'numeric',
+            'shipping' => 'numeric',
+            'total_amount' => 'numeric',
+            'status' => 'required',
+            'items' => 'required|array',
+        ]);
+
+        $return = SaleReturn::create($data);
+
+        foreach ($request->items as $item) {
+            $item['sale_return_id'] = $return->id;
+            SaleReturnItem::create($item);
+        }
+
+        return redirect()->route('sale_returns.index')->with('success', 'Return recorded.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SaleReturn  $saleReturn
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SaleReturn $saleReturn)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SaleReturn  $saleReturn
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SaleReturn $saleReturn)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SaleReturn  $saleReturn
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SaleReturn $saleReturn)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SaleReturn  $saleReturn
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SaleReturn $saleReturn)
-    {
-        //
-    }
+    // Add show, edit, update, destroy if needed
 }

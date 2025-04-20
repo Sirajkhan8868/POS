@@ -173,7 +173,7 @@
     </div>
     <ul class="nav flex-column mt-3" id="sidebarMenu">
         <li class="nav-item p-2">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/home">
                 <i class="fas fa-home icon"></i> Home
             </a>
         </li>
@@ -512,353 +512,99 @@
           </div>
         </div>
       </div>
-
-      <div class="row mb-4">
-        <div class="col-lg-8 mb-4">
-          <div class="card">
-            <div class="card-header bg-white">
-              <h5 class="card-title mb-0">Sales Overview</h5>
-            </div>
-            <div class="card-body">
-              <canvas id="salesChart" height="250"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-          <div class="card">
-            <div class="card-header bg-white">
-              <h5 class="card-title mb-0">Traffic Sources</h5>
-            </div>
-            <div class="card-body">
-              <canvas id="trafficChart" height="250"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      {{-- <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-              <h5 class="card-title mb-0">Recent Orders</h5>
-              <button class="btn btn-sm btn-primary" id="refreshTable">Refresh</button>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Order ID</th>
-                      <th>Customer</th>
-                      <th>Product</th>
-                      <th>Date</th>
-                      <th>Amount</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ordersTableBody">
-                    <tr>
-                      <td>#ORD-0025</td>
-                      <td>John Smith</td>
-                      <td>Laptop Pro</td>
-                      <td>Mar 4, 2025</td>
-                      <td>$1,250</td>
-                      <td><span class="badge bg-success">Completed</span></td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">View</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-0024</td>
-                      <td>Alice Johnson</td>
-                      <td>Smartphone X</td>
-                      <td>Mar 3, 2025</td>
-                      <td>$850</td>
-                      <td><span class="badge bg-warning text-dark">Pending</span></td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">View</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-0023</td>
-                      <td>Robert Brown</td>
-                      <td>Wireless Headphones</td>
-                      <td>Mar 3, 2025</td>
-                      <td>$120</td>
-                      <td><span class="badge bg-success">Completed</span></td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">View</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-0022</td>
-                      <td>Emily Davis</td>
-                      <td>Smart Watch</td>
-                      <td>Mar 2, 2025</td>
-                      <td>$299</td>
-                      <td><span class="badge bg-danger">Cancelled</span></td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">View</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>#ORD-0021</td>
-                      <td>Michael Wilson</td>
-                      <td>Tablet Pro</td>
-                      <td>Mar 1, 2025</td>
-                      <td>$450</td>
-                      <td><span class="badge bg-info">Shipped</span></td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">View</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> --}}
     </div>
 
+
   </main>
+  @yield('content')
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
-    document.getElementById('sidebarToggle').addEventListener('click', function() {
-      document.getElementById('sidebar').classList.toggle('show');
-      document.getElementById('backdrop').classList.toggle('show');
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+      const salesCanvas = document.getElementById('salesChart');
+      const trafficCanvas = document.getElementById('trafficChart');
 
-    document.getElementById('backdrop').addEventListener('click', function() {
-      document.getElementById('sidebar').classList.remove('show');
-      document.getElementById('backdrop').classList.remove('show');
-    });
-
-    const navLinks = document.querySelectorAll('.sidebar .nav-link');
-    navLinks.forEach(link => {
-      link.addEventListener('click', function() {
-        navLinks.forEach(item => item.classList.remove('active'));
-        this.classList.add('active');
-
-        if (window.innerWidth <= 768) {
-          document.getElementById('sidebar').classList.remove('show');
-          document.getElementById('backdrop').classList.remove('show');
-        }
-      });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const salesCtx = document.getElementById('salesChart').getContext('2d');
-      const salesChart = new Chart(salesCtx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          datasets: [{
-            label: 'Sales 2025',
-            data: [12, 19, 15, 17, 14, 18, 21, 23, 19, 24, 28, 30],
-            backgroundColor: 'rgba(0, 123, 255, 0.1)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 2,
-            tension: 0.3,
-            fill: true
-          }, {
-            label: 'Sales 2024',
-            data: [10, 15, 12, 14, 12, 15, 17, 19, 15, 20, 22, 25],
-            backgroundColor: 'rgba(108, 117, 125, 0.1)',
-            borderColor: 'rgba(108, 117, 125, 1)',
-            borderWidth: 2,
-            tension: 0.3,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top',
-            }
+      if (salesCanvas && trafficCanvas) {
+        const salesCtx = salesCanvas.getContext('2d');
+        const salesChart = new Chart(salesCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+              label: 'Sales 2025',
+              data: [12, 19, 15, 17, 14, 18, 21, 23, 19, 24, 28, 30],
+              backgroundColor: 'rgba(0, 123, 255, 0.1)',
+              borderColor: 'rgba(0, 123, 255, 1)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true
+            }, {
+              label: 'Sales 2024',
+              data: [10, 15, 12, 14, 12, 15, 17, 19, 15, 20, 22, 25],
+              backgroundColor: 'rgba(108, 117, 125, 0.1)',
+              borderColor: 'rgba(108, 117, 125, 1)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true
+            }]
           },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
               }
             },
-            x: {
-              grid: {
-                display: false
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  drawBorder: false
+                }
+              },
+              x: {
+                grid: {
+                  display: false
+                }
               }
             }
           }
-        }
-      });
+        });
 
-      const trafficCtx = document.getElementById('trafficChart').getContext('2d');
-      const trafficChart = new Chart(trafficCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Direct', 'Social', 'Referral', 'Organic'],
-          datasets: [{
-            data: [35, 25, 15, 25],
-            backgroundColor: [
-              'rgba(0, 123, 255, 0.8)',
-              'rgba(40, 167, 69, 0.8)',
-              'rgba(255, 193, 7, 0.8)',
-              'rgba(220, 53, 69, 0.8)'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom'
-            }
+        const trafficCtx = trafficCanvas.getContext('2d');
+        const trafficChart = new Chart(trafficCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Direct', 'Social', 'Referral', 'Organic'],
+            datasets: [{
+              data: [35, 25, 15, 25],
+              backgroundColor: [
+                'rgba(0, 123, 255, 0.8)',
+                'rgba(40, 167, 69, 0.8)',
+                'rgba(255, 193, 7, 0.8)',
+                'rgba(220, 53, 69, 0.8)'
+              ],
+              borderWidth: 0
+            }]
           },
-          cutout: '70%'
-        }
-      });
-    });
-
-    function updateRandomStat() {
-      const statNumbers = document.querySelectorAll('.stat-number');
-      const randomIndex = Math.floor(Math.random() * statNumbers.length);
-      const currentValue = parseInt(statNumbers[randomIndex].textContent.replace(/[^0-9]/g, ''));
-      const newValue = currentValue + Math.floor(Math.random() * 100) - 50;
-
-      if (statNumbers[randomIndex].textContent.includes('$')) {
-        statNumbers[randomIndex].textContent = '$' + newValue.toLocaleString();
-      } else {
-        statNumbers[randomIndex].textContent = newValue.toLocaleString();
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            },
+            cutout: '70%'
+          }
+        });
       }
-
-      const statChanges = document.querySelectorAll('.stat-change');
-      const change = statChanges[randomIndex];
-      const icon = change.querySelector('i');
-      const randomChange = (Math.random() * 20 - 5).toFixed(1);
-
-      if (randomChange > 0) {
-        icon.className = 'fas fa-arrow-up';
-        change.innerHTML = '';
-        change.appendChild(icon);
-        change.appendChild(document.createTextNode(' ' + randomChange + '%'));
-      } else {
-        icon.className = 'fas fa-arrow-down';
-        change.innerHTML = '';
-        change.appendChild(icon);
-        change.appendChild(document.createTextNode(' ' + Math.abs(randomChange) + '%'));
-      }
-    }
-
-    setInterval(updateRandomStat, 5000);
-
-    const orders = [
-      {
-        id: '#ORD-0025',
-        customer: 'John Smith',
-        product: 'Laptop Pro',
-        date: 'Mar 4, 2025',
-        amount: '$1,250',
-        status: 'Completed'
-      },
-      {
-        id: '#ORD-0024',
-        customer: 'Alice Johnson',
-        product: 'Smartphone X',
-        date: 'Mar 3, 2025',
-        amount: '$850',
-        status: 'Pending'
-      },
-      {
-        id: '#ORD-0023',
-        customer: 'Robert Brown',
-        product: 'Wireless Headphones',
-        date: 'Mar 3, 2025',
-        amount: '$120',
-        status: 'Completed'
-      },
-      {
-        id: '#ORD-0022',
-        customer: 'Emily Davis',
-        product: 'Smart Watch',
-        date: 'Mar 2, 2025',
-        amount: '$299',
-        status: 'Cancelled'
-      },
-      {
-        id: '#ORD-0021',
-        customer: 'Michael Wilson',
-        product: 'Tablet Pro',
-        date: 'Mar 1, 2025',
-        amount: '$450',
-        status: 'Shipped'
-      },
-      {
-        id: '#ORD-0020',
-        customer: 'Sarah Johnson',
-        product: 'Bluetooth Speaker',
-        date: 'Feb 28, 2025',
-        amount: '$85',
-        status: 'Completed'
-      },
-      {
-        id: '#ORD-0019',
-        customer: 'David Lee',
-        product: 'Gaming Console',
-        date: 'Feb 27, 2025',
-        amount: '$499',
-        status: 'Shipped'
-      },
-      {
-        id: '#ORD-0018',
-        customer: 'Jennifer White',
-        product: 'Wireless Mouse',
-        date: 'Feb 26, 2025',
-        amount: '$45',
-        status: 'Completed'
-      }
-    ];
-
-    document.getElementById('refreshTable').addEventListener('click', function() {
-      const tableBody = document.getElementById('ordersTableBody');
-      tableBody.innerHTML = '';
-
-      const shuffled = [...orders].sort(() => 0.5 - Math.random());
-      const selectedOrders = shuffled.slice(0, 5);
-
-      selectedOrders.forEach(order => {
-        const row = document.createElement('tr');
-
-        let badgeClass = 'bg-secondary';
-        if (order.status === 'Completed') badgeClass = 'bg-success';
-        if (order.status === 'Pending') badgeClass = 'bg-warning text-dark';
-        if (order.status === 'Cancelled') badgeClass = 'bg-danger';
-        if (order.status === 'Shipped') badgeClass = 'bg-info';
-
-        row.innerHTML = `
-          <td>${order.id}</td>
-          <td>${order.customer}</td>
-          <td>${order.product}</td>
-          <td>${order.date}</td>
-          <td>${order.amount}</td>
-          <td><span class="badge ${badgeClass}">${order.status}</span></td>
-          <td>
-            <button class="btn btn-sm btn-outline-primary">View</button>
-          </td>
-        `;
-
-        tableBody.appendChild(row);
-      });
     });
   </script>
+
 </body>
 </html>

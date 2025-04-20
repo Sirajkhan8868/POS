@@ -1,85 +1,56 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\customer;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $customers = Customer::latest()->get();
+        return view('customers.index', compact('customers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('customers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'customer_name' => 'required',
+            'email' => 'required|email|unique:customers,email',
+            'phone' => 'required',
+        ]);
+
+        Customer::create($request->all());
+
+        return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(customer $customer)
+    public function edit(Customer $customer)
     {
-        //
+        return view('customers.edit', compact('customer'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(customer $customer)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $request->validate([
+            'customer_name' => 'required',
+            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'phone' => 'required',
+        ]);
+
+        $customer->update($request->all());
+
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, customer $customer)
+    public function destroy(Customer $customer)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(customer $customer)
-    {
-        //
+        $customer->delete();
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }
