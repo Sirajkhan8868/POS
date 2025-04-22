@@ -10,7 +10,8 @@ class CreateQuotationsTable extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
-            $table->string('customer');
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->date('date');
             $table->decimal('tax', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);

@@ -1,29 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create Barcode</h1>
+
+<div class="mb-4 p-3 border rounded bg-white shadow-sm">
+    <form>
+        <div class="input-group">
+            <button class="btn btn-outline-primary" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+            <input type="search" class="form-control" placeholder="Search product..." aria-label="Search" name="search">
+
+        </div>
+    </form>
+</div>
+
 
     <form action="{{ route('barcodes.store') }}" method="POST">
         @csrf
-        <div class="mb-3">
-            <label for="product_name" class="form-label">Product Name</label>
-            <input type="text" class="form-control" name="product_name" id="product_name" required>
+
+        <div class="border p-3 rounded mb-4 shadow-sm">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <input type="text" class="form-control" name="product_name" placeholder="Product name" id="product_name" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <input type="text" class="form-control" name="product_code" placeholder="Code" id="product_code" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <input type="number" class="form-control" name="quantity" placeholder="Quantity" id="quantity" required>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="product_code" class="form-label">Product Code</label>
-            <input type="text" class="form-control" name="product_code" id="product_code" required>
-        </div>
-        <div class="mb-3">
-            <label for="quantity" class="form-label">Quantity</label>
-            <input type="number" class="form-control" name="quantity" id="quantity" required>
-        </div>
-        <div class="mb-3">
-            <label for="barcode_print" class="form-label">Barcode Print Type</label>
-            <select name="barcode_print" class="form-control" id="barcode_print" required>
-                <option value="barcode">Traditional Barcode</option>
-                <option value="qr_code">QR Code</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Create Barcode</button>
+
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-barcode"></i> Generate Barcode
+        </button>
     </form>
 @endsection

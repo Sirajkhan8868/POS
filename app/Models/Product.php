@@ -14,7 +14,7 @@ class Product extends Model
     protected $fillable = [
         'product_name',
         'product_code',
-        'catagory_id',
+        'category_id',
         'barcode_symbology',
         'cost',
         'price',
@@ -26,9 +26,9 @@ class Product extends Model
         'note',
     ];
 
-    public function catagory()
+    public function category()
     {
-        return $this->belongsTo(Catagory::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function unit()

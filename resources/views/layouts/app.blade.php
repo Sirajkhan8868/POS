@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Dashboard</title>
+  <title>SK Mart Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -14,62 +14,65 @@
       overflow-x: hidden;
     }
     .sidebar {
-    height: 100vh;
-    width: 250px;
-    background: #343a40;
-    color: white;
-    position: fixed;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
+      height: 100vh;
+      width: 250px;
+      background: #343a40;
+      color: white;
+      position: fixed;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      transition: all 0.3s ease;
+      z-index: 1030;
+    }
 
-.sidebar::-webkit-scrollbar {
-    display: none;
-}
+    .sidebar::-webkit-scrollbar {
+      display: none;
+    }
 
-.sidebar-brand {
-    position: sticky;
-    top: 0;
-    background: #343a40;
-    z-index: 1000;
-    padding: 10px;
-}
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 8px;
-            font-size: 13px;
-        }
-        .sidebar a:hover {
-            background: #495057;
-            border-radius: 5px;
-        }
-        .sidebar .nav-item {
-            list-style: none;
-        }
-        .sidebar .dropdown-menu {
-            background: #495057;
-            border: none;
-        }
-        .sidebar .dropdown-item {
-            color: white;
-        }
-        .sidebar .dropdown-item:hover {
-            background: #6c757d;
-        }
-        .icon {
-            margin-right: 10px;
-        }
+    .sidebar-brand {
+      position: sticky;
+      top: 0;
+      background: #343a40;
+      z-index: 1000;
+      padding: 10px;
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      font-size: 13px;
+    }
+    .sidebar a:hover {
+      background: #495057;
+      border-radius: 5px;
+    }
+    .sidebar .nav-item {
+      list-style: none;
+    }
+    .sidebar .dropdown-menu {
+      background: #495057;
+      border: none;
+    }
+    .sidebar .dropdown-item {
+      color: white;
+    }
+    .sidebar .dropdown-item:hover {
+      background: #6c757d;
+    }
+    .icon {
+      margin-right: 10px;
+    }
     .main-content {
-      padding: 20px;
+      padding: 10px;
       margin-left: 250px;
+      transition: all 0.3s ease;
     }
 
     .card {
@@ -112,6 +115,7 @@
     .navbar {
       background-color: white;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      padding: 0.5rem 1rem;
     }
 
     .navbar-toggler {
@@ -131,6 +135,65 @@
       color: #6c757d;
       margin-left: 15px;
       font-size: 1.2rem;
+      position: relative;
+    }
+
+    .btn-pos {
+      background-color: #ff3030;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .badge-notification {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #ff0000;
+      color: white;
+      border-radius: 50%;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.7rem;
+    }
+
+    .user-icon {
+      background-color: #1a73e8;
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 1rem;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      margin-left: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .user-role {
+      font-weight: 500;
+    }
+
+    .user-status {
+      color: #666;
+      display: flex;
+      align-items: center;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      background-color: #2ecc71;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 5px;
     }
 
     @media (max-width: 768px) {
@@ -161,17 +224,26 @@
         display: block;
       }
     }
+
+    /* For sidebar toggle functionality */
+    body.sidebar-collapsed .sidebar {
+      left: -250px;
+    }
+
+    body.sidebar-collapsed .main-content {
+      margin-left: 0;
+    }
   </style>
 </head>
 <body>
   <div class="backdrop" id="backdrop"></div>
 
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand d-flex align-items-center">
+     <div class="sidebar-brand d-flex align-items-center">
         <i class="fa-solid fa-cart-plus py-2 mx-2 fs-6"></i>
-        <span class=" p-2 fs-6">SK Mart</span>
-    </div>
-    <ul class="nav flex-column mt-3" id="sidebarMenu">
+        <span class="p-2 fs-6">SK Mart</span>
+     </div>
+     <ul class="nav flex-column mt-3" id="sidebarMenu">
         <li class="nav-item p-2">
             <a class="nav-link" href="/home">
                 <i class="fas fa-home icon"></i> Home
@@ -184,10 +256,11 @@
             </a>
             <ul class="collapse list-unstyled" id="usersMenu" data-bs-parent="#sidebarMenu">
                 <li>
-                    <a class="nav-link ms-4" href="">
+                    <a class="nav-link ms-4" href="{{ route('categories') }}">
                         <i class="fas fa-th-large m-2"></i> Categories
                     </a>
                 </li>
+
                 <li>
                     <a class="nav-link ms-4" href="{{ route('products.create') }}">
                         <i class="fas fa-plus-circle m-2"></i> Create Products
@@ -223,8 +296,6 @@
                     </a>
                 </li>
             </ul>
-
-            </ul>
         </li>
 
 
@@ -243,7 +314,6 @@
                         <i class="fas fa-list m-2"></i> All Quotations
                     </a>
                 </li>
-
             </ul>
         </li>
 
@@ -461,29 +531,43 @@
                 </li>
             </ul>
         </li>
-
-
-
-    </ul>
+     </ul>
   </div>
 
   <main class="main-content">
-    <nav class="navbar navbar-expand-md navbar-light mb-4">
+    <nav class="navbar navbar-expand-lg navbar-light mb-4">
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" id="sidebarToggle">
           <i class="fas fa-bars"></i>
         </button>
         <span class="navbar-brand d-md-none">SK Mart</span>
+
         <div class="d-flex ms-auto">
-          <div class="input-group me-3 d-none d-md-flex" style="width: 250px;">
-            <input type="text" class="form-control" placeholder="Search...">
-            <button class="btn btn-outline-secondary bg-secondary" type="button">
-              <i class="fas fa-search text-white"></i>
-            </button>
+
+
+          <button class="btn btn-pos me-3" style="border-radius: 25px">
+            <i class="fas fa-shopping-cart me-1"></i> POS System
+          </button>
+
+          <a href="#" class="nav-icon position-relative">
+            <i class="fas fa-bell"></i>
+            <span class="badge-notification">2</span>
+          </a>
+
+          <a href="#" class="nav-icon">
+            <i class="fas fa-envelope"></i>
+          </a>
+
+          <div class="d-flex align-items-center ms-3">
+            <div class="user-icon">
+              <i class="fas fa-power-off"></i>
+            </div>
+            <div class="user-info">
+                <span class="user-role">Administrator</span>
+                <span class="user-status">Offline</span>
+              </div>
+
           </div>
-          <a href="#" class="nav-icon"><i class="fas fa-bell"></i></a>
-          <a href="#" class="nav-icon"><i class="fas fa-envelope"></i></a>
-          <a href="#" class="nav-icon"><i class="fas fa-user-circle"></i></a>
         </div>
       </div>
     </nav>
@@ -541,16 +625,49 @@
       </div>
     </div>
 
+    @yield('content')
 
   </main>
-  @yield('content')
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // Sidebar toggle functionality
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('backdrop');
+      const sidebarToggle = document.getElementById('sidebarToggle');
+      const body = document.body;
+
+      // Function to toggle sidebar
+      function toggleSidebar() {
+        if (window.innerWidth < 768) {
+          // Mobile behavior - show/hide with backdrop
+          sidebar.classList.toggle('show');
+          backdrop.classList.toggle('show');
+        } else {
+          // Desktop behavior - collapse/expand
+          body.classList.toggle('sidebar-collapsed');
+        }
+      }
+
+      // Event listeners
+      sidebarToggle.addEventListener('click', toggleSidebar);
+      backdrop.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        backdrop.classList.remove('show');
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+          sidebar.classList.remove('show');
+          backdrop.classList.remove('show');
+        }
+      });
+
+      // Initialize charts if they exist
       const salesCanvas = document.getElementById('salesChart');
       const trafficCanvas = document.getElementById('trafficChart');
 
@@ -632,6 +749,5 @@
       }
     });
   </script>
-
 </body>
 </html>

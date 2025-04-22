@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Catagory;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-class CatagorySeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +15,7 @@ class CatagorySeeder extends Seeder
      */
     public function run()
     {
-        Catagory::insert([
+        Category::insert([
             [
                 'category_code' => 'CA_16',
                 'category_name' => 'Notebooks',

@@ -9,11 +9,11 @@
     <input type="text" name="product_code" value="{{ old('product_code', $product->product_code ?? '') }}"><br><br>
 
     <label>Category:</label><br>
-    <select name="catagory_id">
+    <select name="category_id">
         <option value="">-- Select Category --</option>
-        @foreach($catagories as $cat)
-            <option value="{{ $cat->id }}" {{ (old('catagory_id', $product->catagory_id ?? '') == $cat->id) ? 'selected' : '' }}>
-                {{ $cat->name }}
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ (old('category_id', $product->category_id ?? '') == $category->id) ? 'selected' : '' }}>
+                {{ $category->category_name }}
             </option>
         @endforeach
     </select><br><br>

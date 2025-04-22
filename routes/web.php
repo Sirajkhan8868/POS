@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarcodeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExpenseController;
@@ -57,6 +58,8 @@ Route::resource('units', UnitController::class);
 Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
 Route::resource('currencies', CurrencyController::class);
 Route::resource('profit_loss', ProfitLossController::class);
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+
 
 Route::get('/purchase-report', function () {
     return view('purchase_report.purchase_report');
