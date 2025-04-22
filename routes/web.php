@@ -40,7 +40,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('', [HomeController::class, 'index'])->name('home');
 Route::resource('products', ProductController::class);
 Route::resource('barcodes', BarcodeController::class);
 Route::resource('stock-adjustments', StockAdjustmentController::class);
