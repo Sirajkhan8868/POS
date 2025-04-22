@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
-            $table->string('supplier');
+            $table->foreignId('supplier_id')->constrained()->onDelete('cascasde');
+            $table->foreignId('product_id')->constrained()->onDelete('cascasde');
             $table->date('date');
             $table->decimal('tax', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);

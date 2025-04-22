@@ -5,6 +5,14 @@
 
     <form action="{{ route('quotations.store') }}" method="POST">
         @csrf
+
+        <div class="input-group mb-3">
+            <button class="btn btn-outline-primary" type="button" id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <input type="search" id="product-search" class="form-control" placeholder="Type product name or code..." aria-label="Search">
+
+        </div>
         <div class="row mb-3">
             <div class="col-md-4">
                 <label for="reference" class="form-label">Reference <span class="text-danger">*</span></label>
@@ -25,12 +33,7 @@
             </div>
         </div>
 
-        <div class="input-group mb-3">
-            <input type="search" id="product-search" class="form-control" placeholder="Type product name or code..." aria-label="Search">
-            <button class="btn btn-outline-primary" type="button" id="search-btn">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
+
 
         <div class="card mb-3">
             <div class="card-body p-0">
@@ -84,10 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="mb-3">
-            <label for="note" class="form-label">Note (If Needed)</label>
-            <textarea name="note" id="note" class="form-control" rows="4"></textarea>
-        </div>
+
 
         <div class="row mb-3">
             <div class="col-md-4">
@@ -111,6 +111,10 @@
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
             </select>
+        </div>
+        <div class="mb-3">
+            <label for="note" class="form-label">Note (If Needed)</label>
+            <textarea name="note" id="note" class="form-control" rows="4"></textarea>
         </div>
 
         <div class="mb-3">

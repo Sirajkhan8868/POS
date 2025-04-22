@@ -11,7 +11,8 @@ class Purchase extends Model
 
     protected $fillable = [
         'reference',
-        'customer_id',
+        'supplier_id',
+        'product_id',
         'date',
         'tax',
         'discount',
@@ -20,10 +21,16 @@ class Purchase extends Model
         'status'
     ];
 
-    public function customer()
+    public function supplier()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Supplier::class);
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
 
     public function items()
     {

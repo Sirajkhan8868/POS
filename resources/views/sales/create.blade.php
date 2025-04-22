@@ -2,111 +2,250 @@
 
 @section('content')
 <div class="container">
-    <h2>Add Sale</h2>
+    <h3 class="text-center mb-4">Create Purchase Order</h3>
 
     <form method="POST" action="{{ route('sales.store') }}">
         @csrf
 
-        <div class="form-group">
-            <label>Reference *</label>
-            <input type="text" name="reference" value="SL" class="form-control" required>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="reference">Reference *</label>
+                <input type="text" name="reference" value="PO-{{ time() }}" class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="customer">Supplier *</label>
+                <select name="customer" class="form-control" required>
+                    <option value="">Select Supplier</option>
+                    <option value="Supplier 1">Supplier 1</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="date">Date *</label>
+                <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" required>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Customer *</label>
-            <select name="customer" class="form-control" required>
-                <option value="">Select Customer</option>
-                <option value="Customer 1">Customer 1</option>
-            </select>
+        <div class="input-group mb-3">
+            <button class="btn btn-outline-primary" type="button" id="search-btn">
+                <i class="fas fa-search"></i> Search Product
+            </button>
+            <input type="search" id="product-search" class="form-control" placeholder="Type product name or code..." aria-label="Search">
         </div>
 
-        <div class="form-group">
-            <label>Date *</label>
-            <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" required>
+        <div class="card mb-3">
+            <div class="card-body p-0">
+                <table class="table table-bordered mb-0">
+                    <thead class="bg-secondary text-white">
+                        <tr>
+                            <th>Product</th>
+                            <th>Unit Price (PKR)</th>
+                            <th>Stock</th>
+                            <th>Quantity</th>
+                            <th>Discount</th>
+                            <th>Tax</th>
+                            <th>Subtotal</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-list">
+                        <tr id="no-products-row">
+                            <td colspan="8" class="text-center">Please search & select products!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <hr>
-        <h5>Products</h5>
-        <table class="table" id="product-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Net Unit Price</th>
-                    <th>Stock</th>
-                    <th>Quantity</th>
-                    <th>Discount</th>
-                    <th>Tax</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="product-body">
-                <tr>
-                    <td><input type="text" name="items[0][product_name]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][net_unit_price]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][stock]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][quantity]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][discount]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][tax]" class="form-control" required></td>
-                    <td><input type="number" name="items[0][subtotal]" class="form-control" required></td>
-                    <td><button type="button" class="btn btn-danger remove-row">X</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-secondary" id="add-row">Add Product</button>
-
-        <hr>
-
-        <div class="form-group">
-            <label>Tax (%)</label>
-            <input type="number" name="tax" value="0" class="form-control">
+        <!-- Additional Info Section (Tax, Discount, Shipping) -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="tax_percentage">Tax (%)</label>
+                <input type="number" name="tax_percentage" id="tax_percentage" class="form-control" value="0" step="0.01">
+            </div>
+            <div class="col-md-4">
+                <label for="discount_percentage">Discount (%)</label>
+                <input type="number" name="discount_percentage" id="discount_percentage" class="form-control" value="0" step="0.01">
+            </div>
+            <div class="col-md-4">
+                <label for="shipping">Shipping (PKR)</label>
+                <input type="number" name="shipping" id="shipping" class="form-control" value="0" step="0.01">
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Discount (%)</label>
-            <input type="number" name="discount" value="0" class="form-control">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-6 text-start">Tax (<span id="tax-rate">0</span>%)</div>
+                    <div class="col-6 text-end">(+) PKR<span id="tax-amount">0.00</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6 text-start">Discount (<span id="discount-rate">0</span>%)</div>
+                    <div class="col-6 text-end">(-) PKR<span id="discount-amount">0.00</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6 text-start">Shipping</div>
+                    <div class="col-6 text-end">(+) PKR<span id="shipping-amount">0.00</span></div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-6 fw-bold">Grand Total</div>
+                    <div class="col-6 text-end fw-bold">(=) PKR<span id="grand-total">0.00</span></div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Shipping</label>
-            <input type="number" name="shipping" value="0" class="form-control">
+        <!-- Hidden Field for Total Amount -->
+        <input type="hidden" name="total_amount" id="total_amount" value="0">
+
+        <!-- Payment Info Section -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="status">Order Status *</label>
+                <select name="status" class="form-control" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="amount_paid">Amount Paid *</label>
+                <input type="number" name="amount_paid" class="form-control" required step="0.01" min="0">
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Status *</label>
-            <select name="status" class="form-control" required>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-            </select>
+        <div class="mb-3">
+            <label for="note">Note</label>
+            <textarea name="note" class="form-control" rows="3"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save Sale</button>
+        <button type="submit" class="btn btn-success">Save Purchase Order</button>
     </form>
 </div>
 
-<script>
-    let rowIndex = 1;
-    document.getElementById('add-row').addEventListener('click', () => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="text" name="items[${rowIndex}][product_name]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][net_unit_price]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][stock]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][quantity]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][discount]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][tax]" class="form-control" required></td>
-            <td><input type="number" name="items[${rowIndex}][subtotal]" class="form-control" required></td>
-            <td><button type="button" class="btn btn-danger remove-row">X</button></td>
-        `;
-        document.getElementById('product-body').appendChild(row);
-        rowIndex++;
-    });
+<template id="product-row-template">
+    <tr class="product-row">
+        <td>
+            <input type="hidden" name="product_id[]" class="product-id">
+            <span class="product-name"></span>
+        </td>
+        <td><input type="number" name="unit_price[]" class="form-control unit-price" step="0.01" required></td>
+        <td><span class="product-stock"></span></td>
+        <td><input type="number" name="quantity[]" class="form-control quantity" min="1" value="1" required></td>
+        <td><input type="number" name="product_discount[]" class="form-control product-discount" step="0.01" value="0"></td>
+        <td><input type="number" name="product_tax[]" class="form-control product-tax" step="0.01" value="0"></td>
+        <td><span class="sub-total">0.00</span><input type="hidden" name="sub_total[]" class="sub-total-input"></td>
+        <td><button type="button" class="btn btn-danger remove-product">X</button></td>
+    </tr>
+</template>
 
-    document.getElementById('product-body').addEventListener('click', function (e) {
-        if (e.target.classList.contains('remove-row')) {
-            e.target.closest('tr').remove();
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productList = document.getElementById('product-list');
+        const noProductsRow = document.getElementById('no-products-row');
+        const template = document.getElementById('product-row-template');
+        const searchBtn = document.getElementById('search-btn');
+        const productSearch = document.getElementById('product-search');
+
+        const taxPercentageInput = document.getElementById('tax_percentage');
+        const discountPercentageInput = document.getElementById('discount_percentage');
+        const shippingInput = document.getElementById('shipping');
+
+        const products = [
+            @foreach($products as $product)
+            {
+                id: {{ $product->id }},
+                name: "{{ $product->product_name }}",
+                price: {{ $product->price }},
+                stock: {{ $product->stock ?? 0 }},
+                code: "{{ $product->code ?? '' }}"
+            },
+            @endforeach
+        ];
+
+        function calculateRowTotal(row) {
+            const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
+            const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+            const discount = parseFloat(row.querySelector('.product-discount').value) || 0;
+            const tax = parseFloat(row.querySelector('.product-tax').value) || 0;
+
+            const subtotal = (unitPrice * quantity) - discount + tax;
+            row.querySelector('.sub-total').textContent = subtotal.toFixed(2);
+            row.querySelector('.sub-total-input').value = subtotal.toFixed(2);
+
+            calculateTotals();
         }
+
+        function calculateTotals() {
+            const rows = document.querySelectorAll('.product-row');
+            let subtotal = 0;
+
+            rows.forEach(row => {
+                subtotal += parseFloat(row.querySelector('.sub-total-input').value) || 0;
+            });
+
+            const taxRate = parseFloat(taxPercentageInput.value) || 0;
+            const discountRate = parseFloat(discountPercentageInput.value) || 0;
+            const shipping = parseFloat(shippingInput.value) || 0;
+
+            const taxAmount = subtotal * (taxRate / 100);
+            const discountAmount = subtotal * (discountRate / 100);
+            const grandTotal = subtotal + taxAmount - discountAmount + shipping;
+
+            document.getElementById('tax-rate').textContent = taxRate.toFixed(2);
+            document.getElementById('discount-rate').textContent = discountRate.toFixed(2);
+            document.getElementById('tax-amount').textContent = taxAmount.toFixed(2);
+            document.getElementById('discount-amount').textContent = discountAmount.toFixed(2);
+            document.getElementById('shipping-amount').textContent = shipping.toFixed(2);
+            document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
+            document.getElementById('total_amount').value = grandTotal.toFixed(2);
+        }
+
+        function addProductRow(product) {
+            if (noProductsRow) noProductsRow.style.display = 'none';
+
+            const clone = template.content.cloneNode(true);
+            clone.querySelector('.product-id').value = product.id;
+            clone.querySelector('.product-name').textContent = product.name;
+            clone.querySelector('.unit-price').value = product.price;
+            clone.querySelector('.product-stock').textContent = product.stock;
+
+            const row = clone.querySelector('tr');
+            row.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', () => calculateRowTotal(row));
+            });
+
+            row.querySelector('.remove-product').addEventListener('click', function () {
+                row.remove();
+                if (!document.querySelector('.product-row')) {
+                    noProductsRow.style.display = '';
+                }
+                calculateTotals();
+            });
+
+            productList.appendChild(row);
+            calculateRowTotal(row);
+        }
+
+        searchBtn.addEventListener('click', () => {
+            const term = productSearch.value.trim().toLowerCase();
+            const found = products.find(p => p.name.toLowerCase().includes(term) || (p.code && p.code.toLowerCase().includes(term)));
+
+            if (found) {
+                addProductRow(found);
+                productSearch.value = '';
+            } else {
+                alert('No matching product found.');
+            }
+        });
+
+        [taxPercentageInput, discountPercentageInput, shippingInput].forEach(input => {
+            input.addEventListener('input', calculateTotals);
+        });
     });
 </script>
+@endpush
 @endsection

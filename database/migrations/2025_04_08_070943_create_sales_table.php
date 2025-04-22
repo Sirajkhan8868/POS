@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
-            $table->string('customer');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->date('date');
             $table->decimal('tax', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->timestamps();
         });
+
     }
 
     /**
