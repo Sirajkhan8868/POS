@@ -3,9 +3,7 @@
 @section('content')
 <div class="container mt-4">
 
-    <button class="btn btn-danger mb-3" id="addProduct">
-        <i class="fas fa-plus"></i> Add Product
-    </button>
+
 
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
@@ -13,6 +11,9 @@
 
     <div class="card">
         <div class="card-body">
+            <button class="btn btn-danger mb-3" id="addProduct">
+                <i class="fas fa-plus"></i> Add Product
+            </button>
             <div class="d-flex justify-content-between mb-3">
                 <div>
                     Show

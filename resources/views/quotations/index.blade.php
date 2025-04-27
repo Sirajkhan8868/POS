@@ -3,9 +3,7 @@
 @section('content')
 <div class="container mt-4">
 
-    <button class="btn btn-danger mb-3" id="addQuotation">
-        <i class="fas fa-plus"></i> Add Quotation
-    </button>
+
 
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
@@ -13,6 +11,9 @@
 
     <div class="card">
         <div class="card-body">
+            <button class="btn btn-danger mb-3" id="addQuotation">
+                <i class="fas fa-plus"></i> Add Quotation
+            </button>
             <div class="d-flex justify-content-between mb-3">
                 <div>
                     Show
@@ -50,27 +51,39 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center fw-normal">Date</th>
-                            <th class="text-center fw-normal">Reference</th>
-                            <th class="text-center fw-normal">Products</th>
-                            <th class="text-center fw-normal">Action</th>
+                            <th class="text-center fw-medium">Date</th>
+                            <th class="text-center fw-medium">Reference</th>
+                            <th class="text-center fw-medium">Products</th>
+                            <th class="text-center fw-medium">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(isset($quotations) && count($quotations) > 0)
                             @foreach($quotations as $quotation)
-                                <tr>
-                                    <td>{{ $quotation->date }}</td>
-                                    <td>{{ $quotation->reference }}</td>
-                                    <td>{{ $quotation->products_count ?? 'N/A' }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ route('quotations.show', $quotation) }}" class="btn btn-info btn-sm">View</a>
-                                        <form action="{{ route('quotations.destroy', $quotation) }}" method="POST" style="display:inline;">
-                                            @csrf @method('DELETE')
-                                            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quotation?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>{{ $quotation->date }}</td>
+                                <td>{{ $quotation->reference }}</td>
+                                <td>{{ $quotation->products_count ?? 'N/A' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('quotations.show', $quotation) }}" class="btn btn-info btn-sm" title="View">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    <a href="{{ route('quotations.edit', $quotation) }}" class="btn btn-warning btn-sm" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <form action="{{ route('quotations.destroy', $quotation) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quotation?')" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+
+                            </tr>
+
                             @endforeach
                         @else
                             <tr>

@@ -11,8 +11,10 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchaseReportController;
 use App\Http\Controllers\PurchaseReturnController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SaleReportController;
 use App\Http\Controllers\SaleReturnController;
@@ -21,6 +23,8 @@ use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentReportController;
+
 use App\Models\SaleReturnReport;
 
 /*
@@ -34,7 +38,7 @@ use App\Models\SaleReturnReport;
 |
 */
 
-Route::get('/', function () {
+Route::get('', function () {
     return view('welcome');
 });
 
@@ -51,6 +55,10 @@ Route::resource('sales', SaleController::class);
 Route::resource('sale_returns', SaleReturnController::class);
 Route::resource('expenses', ExpenseController::class);
 Route::resource('customers', CustomerController::class);
+Route::resource('users', UserController::class);
+Route::resource('roles', RoleController::class);
+
+
 Route::resource('suppliers', SupplierController::class);
 Route::resource('users', UserController::class);
 Route::resource('permissions', PermissionController::class);
@@ -58,7 +66,12 @@ Route::resource('units', UnitController::class);
 Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
 Route::resource('currencies', CurrencyController::class);
 Route::resource('profit_loss', ProfitLossController::class);
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+Route::resource('categories', CategoryController::class);
+Route::resource('profit_losses', ProfitLossController::class);
+Route::resource('payment_reports', PaymentReportController::class);
+
+
+
 
 
 Route::get('/purchase-report', function () {
@@ -75,4 +88,8 @@ Route::get('/sale-report', function () {
 Route::get('/sale-report', [SaleReportController::class, 'index'])->name('sale_report');
 
 Route::get('/sale-return-report', [SaleReturnReportController::class, 'index'])->name('sale_return_report');
+Route::get('/purchase-reports', [PurchaseReportController::class, 'index'])->name('purchase-reports.index');
+Route::get('/sale-reports', [SaleReportController::class, 'index'])->name('sale-reports.index');
+
+
 

@@ -3,49 +3,37 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Models\Supplier;
 
-class SuppliersTableSeeder extends Seeder
+class SupplierSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
-        DB::table('suppliers')->insert([
-            [
-                'supplier_name' => 'ABC Electronics',
-                'email' => 'contact@abcelectronics.com',
-                'phone' => '1234567890',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'supplier_name' => 'Global Tools Co.',
-                'email' => 'support@globaltools.com',
-                'phone' => '9876543210',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'supplier_name' => 'Furniture Supplies Ltd.',
-                'email' => 'info@furnituresupplies.com',
-                'phone' => '5551234567',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'supplier_name' => 'Fresh Foods Ltd.',
-                'email' => 'sales@freshfoods.com',
-                'phone' => '4447654321',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'supplier_name' => 'Packaging Solutions Inc.',
-                'email' => 'contact@packagingsolutions.com',
-                'phone' => '2223344556',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+        Supplier::create([
+            'supplier_name' => 'Global Supplies Ltd.',
+            'email' => 'contact@globalsupplies.com',
+            'phone' => '03121234567',
+        ]);
+
+        Supplier::create([
+            'supplier_name' => 'Fast Traders Co.',
+            'email' => 'info@fasttraders.com',
+            'phone' => '03211234567',
+        ]);
+
+        Supplier::create([
+            'supplier_name' => 'Alpha Distributors',
+            'email' => 'sales@alphadistributors.com',
+            'phone' => '03331234567',
+        ]);
+
+        Supplier::create([
+            'supplier_name' => 'Mega Wholesale',
+            'email' => 'support@megawholesale.com',
+            'phone' => '03451234567',
         ]);
     }
 }

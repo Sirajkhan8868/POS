@@ -245,7 +245,7 @@
      </div>
      <ul class="nav flex-column mt-3" id="sidebarMenu">
         <li class="nav-item p-2">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="">
                 <i class="fas fa-home icon"></i> Home
             </a>
         </li>
@@ -256,7 +256,7 @@
             </a>
             <ul class="collapse list-unstyled" id="usersMenu" data-bs-parent="#sidebarMenu">
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('categories') }}">
+                    <a class="nav-link ms-4" href="{{ route('categories.index') }}">
                         <i class="fas fa-th-large m-2"></i> Categories
                     </a>
                 </li>
@@ -409,19 +409,8 @@
             </a>
             <ul class="collapse list-unstyled" id="partiesMenu">
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('customers.create') }}">
-                        <i class="fas fa-user-plus m-2"></i> Add Customer
-                    </a>
-                </li>
-                <li>
                     <a class="nav-link ms-4" href="{{ route('customers.index') }}">
                         <i class="fas fa-users m-2"></i> All Customers
-                    </a>
-                </li>
-
-                <li>
-                    <a class="nav-link ms-4" href="{{ route('suppliers.create') }}">
-                        <i class="fas fa-user-plus m-2"></i> Add Supplier
                     </a>
                 </li>
                 <li>
@@ -429,8 +418,8 @@
                         <i class="fas fa-truck m-2"></i> All Suppliers
                     </a>
                 </li>
-
             </ul>
+
         </li>
 
         <li class="nav-item p-2">
@@ -439,37 +428,41 @@
             </a>
             <ul class="collapse list-unstyled" id="reportsMenu">
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('profit_loss.index') }}">
+                    <a class="nav-link ms-4" href="{{ route('profit_losses.create') }}">
                         <i class="fas fa-chart-pie m-2"></i> Profit/Loss Report
                     </a>
 
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('payment_reports.index') }}">
                         <i class="fas fa-file-invoice-dollar m-2"></i> Payments Report
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('sale_report') }}">
+                    <a class="nav-link ms-4" href="{{ route('sale-reports.index') }}">
                         <i class="fas fa-chart-bar m-2"></i> Sales Report
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('purchase.report') }}">
+                    <a class="nav-link ms-4" href="{{ route('purchase-reports.index') }}">
                         <i class="fas fa-shopping-cart m-2"></i> Purchases Report
                     </a>
 
                 </li>
                 <li>
-                    <a class="nav-link ms-4" href="#">
+                    <a class="nav-link ms-4" href="{{ route('sale-reports.index') }}">
                         <i class="fas fa-undo m-2"></i> Sales Return Report
                     </a>
                 </li>
+
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('purchase_return_report') }}">
-                        <i class="fas fa-undo-alt m-2"></i> Purchases Return Report
+                    <a class="nav-link ms-4" href="{{ route('purchase-reports.index') }}">
+                        <i class="fas fa-file-invoice-dollar m-2"></i> Purchases Report Report
                     </a>
                 </li>
+
+
+
             </ul>
         </li>
 
@@ -480,7 +473,7 @@
             <ul class="collapse list-unstyled" id="userManagementMenu">
                 <li>
                     <a class="nav-link ms-4" href="{{ route('users.create') }}">
-                        <i class="fas fa-user-plus m-2"></i> Add User
+                        <i class="fas fa-user-plus m-2"></i> Create User
                     </a>
                 </li>
                 <li>
@@ -489,14 +482,10 @@
                     </a>
                 </li>
 
+
                 <li>
-                    <a class="nav-link ms-4" href="{{ route('permissions.create') }}">
-                        <i class="fas fa-lock m-2"></i> Add Permission
-                    </a>
-                </li>
-                <li>
-                    <a class="nav-link ms-4" href="{{ route('permissions.index') }}">
-                        <i class="fas fa-list-alt m-2"></i> All Permissions
+                    <a class="nav-link ms-4" href="{{ route('roles.index') }}">
+                        <i class="fas fa-list-alt m-2"></i> Role $ Permissions
                     </a>
                 </li>
 
@@ -508,11 +497,7 @@
                 <i class="fas fa-tools icon m-2"></i> Setting <i class="fas fa-chevron-down ms-auto"></i>
             </a>
             <ul class="collapse list-unstyled" id="settingsMenu">
-                <li>
-                    <a class="nav-link ms-4" href="{{ route('units.create') }}">
-                        <i class="fas fa-balance-scale m-2"></i> Add Unit
-                    </a>
-                </li>
+
                 <li>
                     <a class="nav-link ms-4" href="{{ route('units.index') }}">
                         <i class="fas fa-list m-2"></i> All Units

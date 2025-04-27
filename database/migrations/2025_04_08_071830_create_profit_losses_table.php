@@ -18,14 +18,12 @@ return new class extends Migration
 
             $table->foreignId('sale_id')->nullable()->constrained('sales')->onDelete('set null');
             $table->foreignId('sale_return_id')->nullable()->constrained('sale_returns')->onDelete('set null');
-            $table->foreignId('profit_id')->nullable()->constrained('profits')->onDelete('set null');
             $table->foreignId('purchase_id')->nullable()->constrained('purchases')->onDelete('set null');
             $table->foreignId('purchase_return_id')->nullable()->constrained('purchase_returns')->onDelete('set null');
 
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
 
-            // Timestamps for created_at and updated_at
             $table->timestamps();
         });
     }

@@ -1,11 +1,30 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
-    <h1>Create Category</h1>
-    <form action="{{ route('categories.store') }}" method="POST">
+<div class="container mt-4">
+    <form action="{{ route('categories.update', $category) }}" method="POST">
         @csrf
-        <input type="text" name="category_code" placeholder="Code">
-        <input type="text" name="category_name" placeholder="Name">
-        <button type="submit">Save</button>
+        @method('PUT')
+
+        <button type="submit" class="btn btn-danger mt-3 mb-4">Update Category</button>
+
+
+        <div class="card shadow-sm bg-white border p-4 rounded">
+            <div class="form-group mb-3">
+                <label for="category_code" class="mb-2">Category Code</label>
+                <input type="text" name="category_code" id="category_code"
+                       class="form-control bg-white border"
+                       value="{{ $category->category_code }}" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="category_name" class="mb-2">Category Name</label>
+                <input type="text" name="category_name" id="category_name"
+                       class="form-control bg-white border"
+                       value="{{ $category->category_name }}" required>
+            </div>
+        </div>
+
     </form>
+</div>
 @endsection

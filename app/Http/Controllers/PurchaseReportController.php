@@ -3,83 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\PurchaseReport;
+use App\Models\PurchaseReportItem;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class PurchaseReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $suppliers = Supplier::all();
+        $query = PurchaseReportItem::query();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if ($request->filled('supplier_id')) {
+            $query->where('supplier_id', $request->supplier_id);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PurchaseReport  $purchaseReport
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PurchaseReport $purchaseReport)
-    {
-        //
-    }
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PurchaseReport  $purchaseReport
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PurchaseReport $purchaseReport)
-    {
-        //
-    }
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseReport  $purchaseReport
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PurchaseReport $purchaseReport)
-    {
-        //
-    }
+        $reports = $query->get();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PurchaseReport  $purchaseReport
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PurchaseReport $purchaseReport)
-    {
-        //
+        return view('purchase_reports.index', compact('suppliers', 'reports'));
     }
 }

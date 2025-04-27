@@ -3,10 +3,6 @@
 @section('content')
 <div class="container mt-4">
 
-    <button class="btn btn-danger mb-3" id="addPurchaseReturn">
-        Add Purchase Return
-        <i class="fas fa-plus"></i>
-    </button>
 
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
@@ -14,6 +10,11 @@
 
     <div class="card">
         <div class="card-body">
+
+    <button class="btn btn-danger mb-3" id="addPurchaseReturn">
+        Add Purchase Return
+        <i class="fas fa-plus"></i>
+    </button>
             <div class="d-flex justify-content-between mb-3">
                 <div>
                     Show
@@ -51,31 +52,41 @@
                 <table class="table table-bordered">
                     <thead class="bg-black text-white">
                         <tr class="bg-black">
-                            <th class="text-center fw-normal">Product</th>
-                            <th class="text-center fw-normal">Net Unit Price</th>
-                            <th class="text-center fw-normal">Stock</th>
-                            <th class="text-center fw-normal">Quantity</th>
-                            <th class="text-center fw-normal">Discount</th>
-                            <th class="text-center fw-normal">Tax</th>
-                            <th class="text-center fw-normal">Sub Total</th>
-                            <th class="text-center fw-normal">Action</th>
+                            <th class="text-center fw-medium">Product</th>
+                            <th class="text-center fw-medium">Net Unit Price</th>
+                            <th class="text-center fw-medium">Stock</th>
+                            <th class="text-center fw-medium">Quantity</th>
+                            <th class="text-center fw-medium">Discount</th>
+                            <th class="text-center fw-medium">Tax</th>
+                            <th class="text-center fw-medium">Sub Total</th>
+                            <th class="text-center fw-medium">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if(isset($purchases) && count($purchases) > 0)
                             @foreach($purchases as $purchase)
-                                <tr>
-                                    <td>{{ $purchase->date }}</td>
-                                    <td>{{ $purchase->reference }}</td>
-                                    <td>{{ $purchase->products_count ?? 'N/A' }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ route('purchases.show', $purchase) }}" class="btn btn-info btn-sm">View</a>
-                                        <form action="{{ route('purchases.destroy', $purchase) }}" method="POST" style="display:inline;">
-                                            @csrf @method('DELETE')
-                                            <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this purchase?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>{{ $purchase->date }}</td>
+                                <td>{{ $purchase->reference }}</td>
+                                <td>{{ $purchase->products_count ?? 'N/A' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('purchases.show', $purchase) }}" class="btn btn-info btn-sm" title="View">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+
+                                    <a href="{{ route('purchases.edit', $purchase) }}" class="btn btn-warning btn-sm" title="Edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+
+                                    <form action="{{ route('purchases.destroy', $purchase) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this purchase?')" title="Delete">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+
                             @endforeach
                         @else
                             <tr>

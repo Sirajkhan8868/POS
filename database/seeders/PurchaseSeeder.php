@@ -1,42 +1,61 @@
 <?php
+
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use App\Models\Purchase;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PurchaseSeeder extends Seeder
 {
-    public function run(): void
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
     {
-        Purchase::create([
-            'reference' => 'PU-00001',
-            'customer' => 'Customer A',
-            'date' => '2024-04-01',
-            'tax' => 5.00,
-            'discount' => 10.00,
-            'shipping' => 15.00,
-            'total_amount' => 500.00,
-            'status' => 'Pending',
-        ]);
-
-        Purchase::create([
-            'reference' => 'PU-00002',
-            'customer' => 'Customer B',
-            'date' => '2024-04-10',
-            'tax' => 0.00,
-            'discount' => 0.00,
-            'shipping' => 5.00,
-            'total_amount' => 300.00,
-            'status' => 'Approved',
-        ]);
-
-        Purchase::create([
-            'reference' => 'PU-00003',
-            'customer' => 'Customer C',
-            'date' => '2024-04-12',
-            'tax' => 8.50,
-            'discount' => 0.00,
-            'shipping' => 0.00,
-            'total_amount' => 250.00,
-            'status' => 'Rejected',
+        // Insert sample purchase data
+        DB::table('purchases')->insert([
+            [
+                'reference' => 'PUR-' . strtoupper(uniqid()),
+                'product_id' => 1, // Assuming product with ID 1 exists
+                'supplier_id' => 1, // Assuming supplier with ID 1 exists
+                'date' => Carbon::now()->format('Y-m-d'),
+                'tax' => 18.00,
+                'discount' => 5.00,
+                'shipping' => 10.00,
+                'total_amount' => 150.00,
+                'status' => 'Pending',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'reference' => 'PUR-' . strtoupper(uniqid()),
+                'product_id' => 2, // Assuming product with ID 2 exists
+                'supplier_id' => 2, // Assuming supplier with ID 2 exists
+                'date' => Carbon::now()->format('Y-m-d'),
+                'tax' => 18.00,
+                'discount' => 7.00,
+                'shipping' => 15.00,
+                'total_amount' => 200.00,
+                'status' => 'Approved',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'reference' => 'PUR-' . strtoupper(uniqid()),
+                'product_id' => 3, // Assuming product with ID 3 exists
+                'supplier_id' => 3, // Assuming supplier with ID 3 exists
+                'date' => Carbon::now()->format('Y-m-d'),
+                'tax' => 18.00,
+                'discount' => 0.00,
+                'shipping' => 20.00,
+                'total_amount' => 300.00,
+                'status' => 'Rejected',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }

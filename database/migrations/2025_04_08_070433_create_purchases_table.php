@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascase');
             $table->date('date');
             $table->decimal('tax', 8, 2)->default(0);
             $table->decimal('discount', 8, 2)->default(0);
@@ -27,7 +27,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

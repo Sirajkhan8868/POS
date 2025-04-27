@@ -2,41 +2,51 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class ProductSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
-        Product::insert([
+        DB::table('products')->insert([
             [
-                'product_name' => 'Notebook A5',
-                'product_code' => 'P001',
-                'catagory_id' => 1,
+                'product_name' => 'Product A',
+                'product_code' => 'A001',
+                'category_id' => 1,
                 'barcode_symbology' => 'EAN-13',
-                'cost' => 50.00,
-                'price' => 75.00,
+                'cost' => 10.00,
+                'price' => 20.00,
                 'quantity' => 100,
                 'alert_quantity' => 10,
-                'tax' => 5.00,
-                'tax_type' => 'percent',
+                'tax' => 18.00,
+                'tax_type' => 'percentage',
                 'unit_id' => 1,
-                'note' => 'Top-selling notebook'
+                'note' => 'Sample product A',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ],
             [
-                'product_name' => 'Science Book',
-                'product_code' => 'P002',
-                'catagory_id' => 2,
-                'barcode_symbology' => 'EAN-13',
-                'cost' => 80.00,
-                'price' => 120.00,
-                'quantity' => 50,
-                'alert_quantity' => 5,
-                'tax' => 10.00,
-                'tax_type' => 'percent',
-                'unit_id' => 1,
-                'note' => 'For high school students'
+                'product_name' => 'Product B',
+                'product_code' => 'B002',
+                'category_id' => 2,
+                'barcode_symbology' => 'UPC',
+                'cost' => 12.50,
+                'price' => 25.00,
+                'quantity' => 200,
+                'alert_quantity' => 15,
+                'tax' => 18.00,
+                'tax_type' => 'percentage',
+                'unit_id' => 2,
+                'note' => 'Sample product B',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
         ]);
     }

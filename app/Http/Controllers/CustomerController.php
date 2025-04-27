@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
@@ -25,7 +26,12 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        Customer::create($request->all());
+        Customer::create([
+            'customer_name' => $request->customer_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
 
         return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
     }
@@ -43,7 +49,12 @@ class CustomerController extends Controller
             'phone' => 'required',
         ]);
 
-        $customer->update($request->all());
+        $customer->update([
+            'customer_name' => $request->customer_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+        ]);
 
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }

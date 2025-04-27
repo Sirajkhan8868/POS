@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Unit;
@@ -8,7 +9,7 @@ class UnitController extends Controller
 {
     public function index()
     {
-        $units = Unit::latest()->get();
+        $units = Unit::all();
         return view('units.index', compact('units'));
     }
 
@@ -23,12 +24,12 @@ class UnitController extends Controller
             'name' => 'required',
             'short_name' => 'required',
             'operator' => 'nullable',
-            'operator_value' => 'required|numeric'
+            'operator_value' => 'required|numeric',
         ]);
 
         Unit::create($request->all());
 
-        return redirect()->route('units.index')->with('success', 'Unit added successfully.');
+        return redirect()->route('units.index')->with('success', 'Unit created successfully.');
     }
 
     public function edit(Unit $unit)
@@ -42,7 +43,7 @@ class UnitController extends Controller
             'name' => 'required',
             'short_name' => 'required',
             'operator' => 'nullable',
-            'operator_value' => 'required|numeric'
+            'operator_value' => 'required|numeric',
         ]);
 
         $unit->update($request->all());

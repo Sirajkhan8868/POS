@@ -1,31 +1,56 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Unit;
 
 class UnitSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('units')->insert([
-            [
-                'name' => 'Pieces',
-                'short_name' => 'pcs',
-                'operator' => '*',
+        if (Unit::count() == 0) {
+            Unit::create([
+                'name' => 'Kilogram',
+                'short_name' => 'kg',
+                'operator' => 'multiply',
                 'operator_value' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Box',
-                'short_name' => 'box',
-                'operator' => '*',
-                'operator_value' => 10,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ]);
+            Unit::create([
+                'name' => 'Gram',
+                'short_name' => 'g',
+                'operator' => 'multiply',
+                'operator_value' => 1000,
+            ]);
+            Unit::create([
+                'name' => 'Meter',
+                'short_name' => 'm',
+                'operator' => 'multiply',
+                'operator_value' => 1,
+            ]);
+            Unit::create([
+                'name' => 'Centimeter',
+                'short_name' => 'cm',
+                'operator' => 'multiply',
+                'operator_value' => 100,
+            ]);
+            Unit::create([
+                'name' => 'Liter',
+                'short_name' => 'L',
+                'operator' => 'multiply',
+                'operator_value' => 1,
+            ]);
+            Unit::create([
+                'name' => 'Milliliter',
+                'short_name' => 'mL',
+                'operator' => 'multiply',
+                'operator_value' => 1000,
+            ]);
+            Unit::create([
+                'name' => 'Piece',
+                'short_name' => 'pc',
+                'operator' => null,
+                'operator_value' => 1,
+            ]);
+        }
     }
 }

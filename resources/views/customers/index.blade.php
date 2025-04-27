@@ -1,36 +1,109 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2>All Customers</h2>
-    <a href="{{ route('customers.create') }}" class="btn btn-primary mb-2">Add Customer</a>
+<div class="container mt-4">
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+
+
+    @if(session('success'))
+        <div class="alert alert-success mt-2">{{ session('success') }}</div>
     @endif
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th><th>Email</th><th>Phone</th><th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($customers as $customer)
-                <tr>
-                    <td>{{ $customer->customer_name }}</td>
-                    <td>{{ $customer->email }}</td>
-                    <td>{{ $customer->phone }}</td>
-                    <td>
-                        <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" style="display:inline-block;">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this customer?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="card">
+        <div class="card-body">
+            <a href="{{ route('customers.create') }}" class="btn btn-danger mb-3">
+                <i class="fas fa-plus"></i> Add Customer
+            </a>
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    Show
+                    <select class="form-select form-select-sm d-inline-block w-auto">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    entries
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-file-excel"></i> Excel
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-sync"></i> Reload
+                    </button>
+                </div>
+                <div class="d-flex">
+                    <span>Search:</span>
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="bg-black text-white">
+                        <tr>
+                            <th class="text-center fw-normal">Name</th>
+                            <th class="text-center fw-normal">Email</th>
+                            <th class="text-center fw-normal">Phone</th>
+                            <th class="text-center fw-normal">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($customers->count() > 0)
+                            @foreach($customers as $customer)
+                                <tr>
+                                    <td>{{ $customer->customer_name }}</td>
+                                    <td>{{ $customer->email }}</td>
+                                    <td>{{ $customer->phone }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-sm btn-link text-warning" title="Edit">
+                                            <i class="fas fa-edit fa-lg"></i>
+                                        </a>
+                                        <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-link text-danger" onclick="return confirm('Delete this customer?')" title="Delete">
+                                                <i class="fas fa-trash-alt fa-lg"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="4" class="text-center">No customers available.</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>Showing 1 to {{ $customers->count() }} of {{ $customers->count() }} entries</div>
+                <div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

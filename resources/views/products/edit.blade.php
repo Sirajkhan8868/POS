@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Edit Product</h2>
 
     @if ($errors->any())
         <div style="color: red;">
@@ -17,7 +16,13 @@
         @csrf
         @method('PUT')
 
+
+
         <div class="container">
+            <button type="submit" class="btn btn-primary">Update Product</button>
+
+            <div class=" p-4 mt-4 mb-4" style="background-color: white; border-radius: 40px">
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -120,8 +125,8 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <button type="submit" class="btn btn-primary">Update Product</button>
         </div>
     </form>
 @endsection

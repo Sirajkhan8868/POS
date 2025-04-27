@@ -1,23 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2>{{ isset($permission) ? 'Edit' : 'Add' }} Permission</h2>
-    <form method="POST" action="{{ isset($permission) ? route('permissions.update', $permission->id) : route('permissions.store') }}">
-        @csrf
-        @if(isset($permission)) @method('PUT') @endif
-
-        <div class="form-group">
-            <label>Permission Name (e.g., `edit-user`)</label>
-            <input type="text" name="name" class="form-control" value="{{ old('name', $permission->name ?? '') }}" required>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <a href="{{ route('roles.create') }}" class="btn btn-danger">
+                <i class="fas fa-user-shield"></i> Create Role
+            </a>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Action Label (e.g., `Edit User`)</label>
-            <input type="text" name="action" class="form-control" value="{{ old('action', $permission->action ?? '') }}" required>
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="{{ isset($permission) ? route('permissions.update', $permission->id) : route('permissions.store') }}">
+                @csrf
+                @if(isset($permission)) @method('PUT') @endif
+
+                <div class="mb-3">
+                    <label class="form-label">Permission Name <small class="text-muted"></small></label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name', $permission->name ?? '') }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Action Label <small class="text-muted"></small></label>
+                    <input type="text" name="action" class="form-control" value="{{ old('action', $permission->action ?? '') }}" required>
+                </div>
+
+            </form>
         </div>
-
-        <button class="btn btn-success mt-2">{{ isset($permission) ? 'Update' : 'Save' }}</button>
-    </form>
+    </div>
 </div>
 @endsection

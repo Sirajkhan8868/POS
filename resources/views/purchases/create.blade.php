@@ -6,13 +6,18 @@
     <form action="{{ route('quotations.store') }}" method="POST">
         @csrf
 
-        <div class="input-group mb-3">
-            <button class="btn btn-outline-primary" type="button" id="search-btn">
-                <i class="fas fa-search"></i>
-            </button>
-            <input type="search" id="product-search" class="form-control" placeholder="Type product name or code..." aria-label="Search">
-
+        <div class="card mb-4 shadow-sm" style="border-radius: 20px">
+            <div class="card-body p-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="search" class="form-control border-start-0" placeholder="Type product name or code..." aria-label="Search" name="search">
+                </div>
+            </div>
         </div>
+
+        <div class="border p-4 bg-white" style="border-radius: 20px">
         <div class="row mb-3">
             <div class="col-md-4">
                 <label for="reference" class="form-label">Reference <span class="text-danger">*</span></label>
@@ -40,14 +45,14 @@
                 <table class="table table-bordered mb-0">
                     <thead class="bg-secondary  text-white">
                         <tr>
-                            <th style="font-weight: normal;">Product</th>
-                            <th style="font-weight: normal;">Net Unit Price</th>
-                            <th style="font-weight: normal;">Stock</th>
-                            <th style="font-weight: normal;">Quantity</th>
-                            <th style="font-weight: normal;">Discount</th>
-                            <th style="font-weight: normal;">Tax</th>
-                            <th style="font-weight: normal;">Sub Total</th>
-                            <th style="font-weight: normal;">Action</th>
+                            <th style="font-weight: medium;">Product</th>
+                            <th style="font-weight: medium;">Net Unit Price</th>
+                            <th style="font-weight: medium;">Stock</th>
+                            <th style="font-weight: medium;">Quantity</th>
+                            <th style="font-weight: medium;">Discount</th>
+                            <th style="font-weight: medium;">Tax</th>
+                            <th style="font-weight: medium;">Sub Total</th>
+                            <th style="font-weight: medium;">Action</th>
                         </tr>
 
                     </thead>
@@ -67,20 +72,20 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-6 text-start">Tax (0%)</div>
+                            <div class="col-6 text-start fw-bold">Tax (0%)</div>
                             <div class="col-6 text-end">(+) PKR<span id="tax-amount">0.00</span></div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-6 text-start">Discount (0%)</div>
+                            <div class="col-6 text-start fw-bold">Discount (0%)</div>
                             <div class="col-6 text-end">(-) PKR<span id="discount-amount">0.00</span></div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-6 text-start">Shipping</div>
+                            <div class="col-6 text-start fw-bold">Shipping</div>
                             <div class="col-6 text-end">(+) PKR<span id="shipping-amount">0.00</span></div>
                         </div>
                         <hr>
                         <div class="row mb-2">
-                            <div class="col-6 text-start fw-normal">Grand Total</div>
+                            <div class="col-6 text-start fw-normal fw-bold">Grand Total</div>
                             <div class="col-6 text-end fw-bold">(=) PKR<span id="grand-total">0.00</span></div>
                         </div>
                     </div>
@@ -139,7 +144,12 @@
 
         <div class="mb-3">
             <input type="hidden" name="total_amount" id="total_amount" value="0">
-            <button type="submit" class="btn btn-danger">Create Quotation</button>
+            <button type="submit" class="btn btn-danger">
+                Create Product
+                <i class="fas fa-check"></i>
+            </button>
+        </div>
+
         </div>
     </form>
 </div>
