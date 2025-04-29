@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CustomerSeeder extends Seeder
 {
@@ -12,32 +13,31 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        Customer::create([
-            'customer_name' => 'John Doe',
-            'email' => 'john@example.com',
-            'phone' => '1234567890',
-            'address' => '123 Main Street, City, Country',
-        ]);
-
-        Customer::create([
-            'customer_name' => 'Jane Smith',
-            'email' => 'jane@example.com',
-            'phone' => '9876543210',
-            'address' => '456 Elm Street, Town, Country',
-        ]);
-
-        Customer::create([
-            'customer_name' => 'Ali Khan',
-            'email' => 'ali@example.com',
-            'phone' => '03001234567',
-            'address' => 'Karachi, Pakistan',
-        ]);
-
-        Customer::create([
-            'customer_name' => 'Sara Lee',
-            'email' => 'sara@example.com',
-            'phone' => '03111234567',
-            'address' => 'Lahore, Pakistan',
+        DB::table('customers')->insert([
+            [
+                'customer_name' => 'Ali Khan',
+                'email' => 'ali.khan@example.com',
+                'phone' => '03001234567',
+                'address' => 'Lahore, Pakistan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'customer_name' => 'Sara Ahmed',
+                'email' => 'sara.ahmed@example.com',
+                'phone' => '03111234567',
+                'address' => 'Karachi, Pakistan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'customer_name' => 'Usman Raza',
+                'email' => 'usman.raza@example.com',
+                'phone' => '03211234567',
+                'address' => 'Islamabad, Pakistan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

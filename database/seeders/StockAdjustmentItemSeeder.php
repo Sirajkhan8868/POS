@@ -9,32 +9,30 @@ class StockAdjustmentItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         DB::table('stock_adjustment_items')->insert([
             [
                 'adjustment_id' => 1,
                 'product_id' => 1,
-                'stock' => 'Product A',
-                'code' => 'A001',
+                'stock' => 'Warehouse A',
+                'code' => 'P-1001',
                 'quantity' => '10',
                 'type' => 'increase',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'adjustment_id' => 1,
+                'adjustment_id' => 2,
                 'product_id' => 2,
-                'stock' => 'Product B',
-                'code' => 'B002',
+                'stock' => 'Warehouse B',
+                'code' => 'P-1002',
                 'quantity' => '5',
                 'type' => 'decrease',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 }

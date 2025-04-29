@@ -7,29 +7,26 @@ use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('roles')->insert([
             [
-                'name' => 'Admin',
-                'permissions' => 'create,edit,delete,view',
+                'name'        => 'Admin',
+                'permissions' => '["create", "edit", "delete", "view"]',
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
             [
-                'name' => 'Manager',
-                'permissions' => 'create,edit,view',
+                'name'        => 'Manager',
+                'permissions' => '["edit", "view"]',
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
             [
-                'name' => 'Editor',
-                'permissions' => 'edit,view',
-            ],
-            [
-                'name' => 'Viewer',
-                'permissions' => 'view',
+                'name'        => 'User',
+                'permissions' => '["view"]',
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
         ]);
     }

@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseItem;
 use Carbon\Carbon;
 
 class PurchaseItemSeeder extends Seeder
@@ -15,43 +15,38 @@ class PurchaseItemSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('purchase_items')->insert([
-            [
-                'purchase_id' => 1,
-                'product_name' => 'Product A',
-                'stock' => 50,
-                'quantity' => 10,
-                'net_unit_price' => 20.00,
-                'discount' => 5.00,
-                'tax' => 3.60,
-                'subtotal' => 200.00,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'purchase_id' => 1,
-                'product_name' => 'Product B',
-                'stock' => 100,
-                'quantity' => 5,
-                'net_unit_price' => 25.00,
-                'discount' => 2.00,
-                'tax' => 4.50,
-                'subtotal' => 125.00,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'purchase_id' => 2,
-                'product_name' => 'Product C',
-                'stock' => 200,
-                'quantity' => 3,
-                'net_unit_price' => 15.00,
-                'discount' => 1.50,
-                'tax' => 2.70,
-                'subtotal' => 46.50,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+        // Insert a few sample records into the purchase_items table
+        PurchaseItem::create([
+            'purchase_id' => 1, // Ensure that purchase_id 1 exists in your purchase table
+            'product_name' => 'Product 1',
+            'stock' => 100,
+            'quantity' => 10,
+            'net_unit_price' => 50.00,
+            'discount' => 5.00,
+            'tax' => 7.00,
+            'subtotal' => 450.00,
+        ]);
+
+        PurchaseItem::create([
+            'purchase_id' => 2, // Ensure that purchase_id 2 exists
+            'product_name' => 'Product 2',
+            'stock' => 200,
+            'quantity' => 20,
+            'net_unit_price' => 30.00,
+            'discount' => 2.00,
+            'tax' => 4.00,
+            'subtotal' => 560.00,
+        ]);
+
+        PurchaseItem::create([
+            'purchase_id' => 3, // Ensure that purchase_id 3 exists
+            'product_name' => 'Product 3',
+            'stock' => 150,
+            'quantity' => 15,
+            'net_unit_price' => 40.00,
+            'discount' => 3.00,
+            'tax' => 6.00,
+            'subtotal' => 540.00,
         ]);
     }
 }

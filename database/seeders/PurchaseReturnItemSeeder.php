@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseReturnItem;
 use Carbon\Carbon;
 
 class PurchaseReturnItemSeeder extends Seeder
@@ -15,31 +15,37 @@ class PurchaseReturnItemSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('purchase_return_items')->insert([
-            [
-                'purchase_return_id' => 1,
-                'product_name' => 'Product A',
-                'stock' => 50,
-                'quantity' => 5,
-                'net_unit_price' => 20.00,
-                'discount' => 2.00,
-                'tax' => 3.00,
-                'subtotal' => 90.00,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'purchase_return_id' => 2,
-                'product_name' => 'Product B',
-                'stock' => 30,
-                'quantity' => 3,
-                'net_unit_price' => 25.00,
-                'discount' => 1.00,
-                'tax' => 4.00,
-                'subtotal' => 75.00,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+        PurchaseReturnItem::create([
+            'purchase_return_id' => 1,
+            'product_name' => 'Product 1',
+            'stock' => 50,
+            'quantity' => 5,
+            'net_unit_price' => 50.00,
+            'discount' => 5.00,
+            'tax' => 7.00,
+            'subtotal' => 225.00,
+        ]);
+
+        PurchaseReturnItem::create([
+            'purchase_return_id' => 2,
+            'product_name' => 'Product 2',
+            'stock' => 100,
+            'quantity' => 10,
+            'net_unit_price' => 30.00,
+            'discount' => 2.00,
+            'tax' => 4.00,
+            'subtotal' => 280.00,
+        ]);
+
+        PurchaseReturnItem::create([
+            'purchase_return_id' => 3, // Ensure that purchase_return_id 3 exists
+            'product_name' => 'Product 3',
+            'stock' => 75,
+            'quantity' => 7,
+            'net_unit_price' => 40.00,
+            'discount' => 3.00,
+            'tax' => 6.00,
+            'subtotal' => 315.00,
         ]);
     }
 }

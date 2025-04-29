@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('purchase_return_report_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_return_report_id')->constrained('purchase_reports')->onDelete('cascade');
+            $table->foreignId('purchase_return_report_id')->constrained('purchase_return_reports')->onDelete('cascade');
             $table->date('date');
             $table->string('reference');
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');

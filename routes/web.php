@@ -38,7 +38,7 @@ use App\Models\SaleReturnReport;
 |
 */
 
-Route::get('', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
 
@@ -81,7 +81,6 @@ Route::get('/purchase-report', function () {
 Route::get('/purchase-return-report', function () {
     return view('purchase_report.purchase_return_report');
 })->name('purchase_return_report');
-
 Route::get('/sale-report', function () {
     return view('sale_report.sale_report');
 })->name('sale.report');

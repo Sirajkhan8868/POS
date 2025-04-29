@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseReturn;
 use Carbon\Carbon;
 
 class PurchaseReturnSeeder extends Seeder
@@ -15,31 +15,37 @@ class PurchaseReturnSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('purchase_returns')->insert([
-            [
-                'reference' => 'PR-001',
-                'supplier' => 'Supplier A',
-                'date' => Carbon::now()->format('Y-m-d'),
-                'tax' => 20.00,
-                'discount' => 5.00,
-                'shipping' => 15.00,
-                'total_amount' => 150.00,
-                'status' => 'Completed',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'reference' => 'PR-002',
-                'supplier' => 'Supplier B',
-                'date' => Carbon::now()->format('Y-m-d'),
-                'tax' => 18.00,
-                'discount' => 8.00,
-                'shipping' => 12.00,
-                'total_amount' => 120.00,
-                'status' => 'Pending',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
+        PurchaseReturn::create([
+            'reference' => 'PR-1001',
+            'supplier_id' => 1,
+            'date' => Carbon::now()->toDateString(),
+            'tax' => 15.00,
+            'discount' => 5.00,
+            'shipping' => 10.00,
+            'total_amount' => 100.00,
+            'status' => 'completed',
+        ]);
+
+        PurchaseReturn::create([
+            'reference' => 'PR-1002',
+            'supplier_id' => 2,
+            'date' => Carbon::now()->subDays(1)->toDateString(),
+            'tax' => 20.00,
+            'discount' => 10.00,
+            'shipping' => 15.00,
+            'total_amount' => 200.00,
+            'status' => 'pending',
+        ]);
+
+        PurchaseReturn::create([
+            'reference' => 'PR-1003',
+            'supplier_id' => 3,
+            'date' => Carbon::now()->subDays(5)->toDateString(),
+            'tax' => 10.00,
+            'discount' => 0.00,
+            'shipping' => 5.00,
+            'total_amount' => 50.00,
+            'status' => 'cancelled',
         ]);
     }
 }

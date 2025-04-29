@@ -7,37 +7,32 @@ use Illuminate\Support\Facades\DB;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('permissions')->insert([
             [
-                'name' => 'view_dashboard',
-                'action' => 'view',
+                'name'   => 'create',
+                'action' => 'create records',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' => 'edit_profile',
-                'action' => 'edit',
+                'name'   => 'edit',
+                'action' => 'edit records',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' => 'create_post',
-                'action' => 'create',
+                'name'   => 'delete',
+                'action' => 'delete records',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' => 'delete_post',
-                'action' => 'delete',
-            ],
-            [
-                'name' => 'view_reports',
-                'action' => 'view',
-            ],
-            [
-                'name' => 'manage_users',
-                'action' => 'edit',
+                'name'   => 'view',
+                'action' => 'view records',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }

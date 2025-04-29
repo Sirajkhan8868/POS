@@ -11,22 +11,21 @@ return new class extends Migration
      *
      * @return void
      */
-        public function up()
-        {
-            Schema::create('purchase_returns', function (Blueprint $table) {
-                $table->id();
-                $table->string('reference');
-                $table->string('supplier');  // <-- This is the column you need
-                $table->date('date');
-                $table->decimal('tax', 8, 2);
-                $table->decimal('discount', 8, 2);
-                $table->decimal('shipping', 8, 2);
-                $table->decimal('total_amount', 10, 2);
-                $table->string('status');
-                $table->timestamps();
-            });
-        }
-
+    public function up()
+    {
+        Schema::create('purchase_returns', function (Blueprint $table) {
+            $table->id();
+            $table->string('reference');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->date('date');
+            $table->decimal('tax', 8, 2);
+            $table->decimal('discount', 8, 2);
+            $table->decimal('shipping', 8, 2);
+            $table->decimal('total_amount', 10, 2);
+            $table->string('status');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

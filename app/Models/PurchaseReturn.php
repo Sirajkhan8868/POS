@@ -10,7 +10,6 @@ class PurchaseReturn extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
         'reference',
         'supplier_id',
         'date',
@@ -22,9 +21,9 @@ class PurchaseReturn extends Model
     ];
 
     public function supplier()
-{
-    return $this->belongsTo(Supplier::class);
-}
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 
     public function items()
     {
