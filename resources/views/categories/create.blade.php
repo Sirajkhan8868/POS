@@ -4,8 +4,8 @@
 <div class="container mt-4">
     <form action="{{ route('categories.store') }}" method="POST">
         @csrf
-        <button type="submit" class="btn btn-danger mt-3 mb-4">Create Category</button>
 
+        <button type="submit" class="btn btn-danger mt-3 mb-4">Create Category</button>
 
         <div class="card shadow-sm bg-white">
             <div class="card-body">
@@ -20,9 +20,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </form>
 </div>
 @endsection

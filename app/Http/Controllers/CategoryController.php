@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(10);
         return view('categories.index', compact('categories'));
     }
 
@@ -22,11 +22,11 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category_code' => 'required|unique:categories',
-            'category_name' => 'required',
-            'product_count' => 'required|numeric',
+            'category_name' => 'required|unique:categories',
         ]);
 
-        Category::create($request->all());
+        // Create the category, and product_count will be handled automatically.
+        Category::create($request->only(['category_code', 'category_name']));
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
@@ -40,20 +40,30 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category_code' => 'required|unique:categories,category_code,' . $category->id,
-            'category_name' => 'required',
-            'product_count' => 'required|numeric',
+            'category_name' => 'required|unique:categories,category_name,' . $category->id,
         ]);
 
-        $category->update($request->all());
+        // Update the category and product_count will be handled automatically.
+        $category->update($request->only(['category_code', 'category_name']));
+
+        // Update product count manually if needed
+        $category->updateProductCount();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     public function destroy(Category $category)
     {
-        $category->delete();
+        if ($category->products()->count() > 0) {
+            return redirect()->route('categories.index')->with('error', 'Category cannot be deleted because it has associated products.');
+        }
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        try {
+            $category->delete();
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('categories.index')->with('error', 'Failed to delete category. ' . $e->getMessage());
+        }
     }
 
     public function show(Category $category)

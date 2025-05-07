@@ -2,9 +2,6 @@
 
 @section('content')
 <div class="container mt-4">
-
-
-
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
     @endif
@@ -48,12 +45,14 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table text-center table-bordered">
                     <thead>
                         <tr>
                             <th class="text-center fw-medium">Date</th>
                             <th class="text-center fw-medium">Reference</th>
-                            <th class="text-center fw-medium">Products</th>
+                            <th class="text-center fw-medium">Customer</th>
+                            <th class="text-center fw-medium">Status</th>
+                            <th class="text-center fw-medium">Total Amount</th>
                             <th class="text-center fw-medium">Action</th>
                         </tr>
                     </thead>
@@ -63,7 +62,9 @@
                             <tr>
                                 <td>{{ $quotation->date }}</td>
                                 <td>{{ $quotation->reference }}</td>
-                                <td>{{ $quotation->products_count ?? 'N/A' }}</td>
+                                <td>{{ $quotation->customer->name ?? 'N/A' }}</td>
+                                <td>{{ $quotation->status }}</td>
+                                <td>{{ number_format($quotation->total_amount, 2) }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('quotations.show', $quotation) }}" class="btn btn-info btn-sm" title="View">
                                         <i class="fas fa-eye"></i>
@@ -81,13 +82,11 @@
                                         </button>
                                     </form>
                                 </td>
-
                             </tr>
-
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="4" class="text-center">No data available in table</td>
+                                <td colspan="6" class="text-center">No data available in table</td>
                             </tr>
                         @endif
                     </tbody>
@@ -95,7 +94,7 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>Showing 0 to 0 of 0 entries</div>
+                <div>Showing {{ count($quotations) }} of {{ count($quotations) }} entries</div>
                 <div>
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end mb-0">

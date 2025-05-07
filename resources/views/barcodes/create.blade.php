@@ -41,9 +41,5 @@
                 <i class="fas fa-barcode"></i> Generate Barcode
             </button>
         </div>
-
-
-
-
     </form>
 @endsection

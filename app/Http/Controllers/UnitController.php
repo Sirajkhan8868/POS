@@ -50,10 +50,14 @@ class UnitController extends Controller
 
         return redirect()->route('units.index')->with('success', 'Unit updated successfully.');
     }
-
     public function destroy(Unit $unit)
     {
+        if ($unit->products()->exists()) {
+            return redirect()->route('units.index')->with('error', 'Cannot delete unit because it is associated with products.');
+        }
+
         $unit->delete();
         return redirect()->route('units.index')->with('success', 'Unit deleted successfully.');
     }
+
 }

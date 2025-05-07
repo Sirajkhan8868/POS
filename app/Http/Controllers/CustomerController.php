@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
@@ -9,7 +8,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::latest()->get();
+        $customers = Customer::all();
         return view('customers.index', compact('customers'));
     }
 
@@ -21,19 +20,14 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_name' => 'required',
-            'email' => 'required|email|unique:customers,email',
-            'phone' => 'required',
+            'customer_name' => 'required|string',
+            'email' => 'required|email',
+            'phone1' => 'required|string',
         ]);
 
-        Customer::create([
-            'customer_name' => $request->customer_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
+        Customer::create($request->all());
 
-        return redirect()->route('customers.index')->with('success', 'Customer added successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
     }
 
     public function edit(Customer $customer)
@@ -44,17 +38,12 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $request->validate([
-            'customer_name' => 'required',
-            'email' => 'required|email|unique:customers,email,' . $customer->id,
-            'phone' => 'required',
+            'customer_name' => 'required|string',
+            'email' => 'required|email',
+            'phone1' => 'required|string',
         ]);
 
-        $customer->update([
-            'customer_name' => $request->customer_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-        ]);
+        $customer->update($request->all());
 
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
@@ -62,6 +51,7 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
+
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
     }
 }

@@ -1,51 +1,43 @@
 <?php
 
-use App\Http\Controllers\BarcodeController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfitLossController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\PurchaseReportController;
-use App\Http\Controllers\PurchaseReturnController;
-use App\Http\Controllers\QuotationController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SaleController;
-use App\Http\Controllers\SaleReportController;
-use App\Http\Controllers\SaleReturnController;
-use App\Http\Controllers\SaleReturnReportController;
-use App\Http\Controllers\StockAdjustmentController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\UnitController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PaymentReportController;
+use Illuminate\Support\Facades\Auth;
 
-use App\Models\SaleReturnReport;
+use App\Http\Controllers\{
+    BarcodeController,
+    CategoryController,
+    CurrencyController,
+    CustomerController,
+    ExpenseController,
+    HomeController,
+    PermissionController,
+    ProductController,
+    ProfitLossController,
+    PurchaseController,
+    PurchaseReportController,
+    PurchaseReturnController,
+    QuotationController,
+    RoleController,
+    SaleController,
+    SaleReportController,
+    SaleReturnController,
+    SaleReturnReportController,
+    StockAdjustmentController,
+    SupplierController,
+    UnitController,
+    UserController,
+    PaymentReportController,
+    ProductsController
+};
 
-/*
-|---------------------------------------------------------------------------
-| Web Routes
-|---------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// Home route
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
-Route::get('/home', function () {
-    return view('welcome');
-});
-
+// Auth routes
 Auth::routes();
 
-Route::get('', [HomeController::class, 'index'])->name('home');
-Route::resource('products', ProductController::class);
+// Resource routes
+Route::resource('products', ProductsController::class);
 Route::resource('barcodes', BarcodeController::class);
 Route::resource('stock-adjustments', StockAdjustmentController::class);
 Route::resource('quotations', QuotationController::class);
@@ -57,38 +49,38 @@ Route::resource('expenses', ExpenseController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('users', UserController::class);
 Route::resource('roles', RoleController::class);
-
-
 Route::resource('suppliers', SupplierController::class);
-Route::resource('users', UserController::class);
 Route::resource('permissions', PermissionController::class);
 Route::resource('units', UnitController::class);
-Route::get('currencies', [CurrencyController::class, 'index'])->name('currencies.index');
 Route::resource('currencies', CurrencyController::class);
-Route::resource('profit_loss', ProfitLossController::class);
-Route::resource('categories', CategoryController::class);
 Route::resource('profit_losses', ProfitLossController::class);
+Route::resource('categories', CategoryController::class);
 Route::resource('payment_reports', PaymentReportController::class);
 
-
-
-
-
-Route::get('/purchase-report', function () {
-    return view('purchase_report.purchase_report');
-})->name('purchase.report');
-
+// Report views (if not using controllers)
+Route::get('/purchase-report', [PurchaseReportController::class, 'index'])->name('purchase.report');
 Route::get('/purchase-return-report', function () {
     return view('purchase_report.purchase_return_report');
 })->name('purchase_return_report');
-Route::get('/sale-report', function () {
-    return view('sale_report.sale_report');
-})->name('sale.report');
-Route::get('/sale-report', [SaleReportController::class, 'index'])->name('sale_report');
 
+// Sale report
+Route::get('/sale-report', [SaleReportController::class, 'index'])->name('sale.report');
+
+// Sale return report
 Route::get('/sale-return-report', [SaleReturnReportController::class, 'index'])->name('sale_return_report');
+
+// Additional report routes
 Route::get('/purchase-reports', [PurchaseReportController::class, 'index'])->name('purchase-reports.index');
 Route::get('/sale-reports', [SaleReportController::class, 'index'])->name('sale-reports.index');
 
+Auth::routes();
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

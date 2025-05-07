@@ -110,10 +110,12 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="tax_type">Tax Type:</label>
-                        <input type="text" name="tax_type" class="form-control" value="{{ old('tax_type', $product->tax_type) }}">
-                    </div>
+                    <label for="tax_type" class="form-label">Tax Type</label>
+                    <select name="tax_type" class="form-select">
+                        <option value="">Select Tax Type</option>
+                        <option value="inclusive" {{ old('tax_type', $product->tax_type ?? '') == 'inclusive' ? 'selected' : '' }}>Inclusive</option>
+                        <option value="exclusive" {{ old('tax_type', $product->tax_type ?? '') == 'exclusive' ? 'selected' : '' }}>Exclusive</option>
+                    </select>
                 </div>
             </div>
 

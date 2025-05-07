@@ -18,6 +18,7 @@ class CreateQuotationsTable extends Migration
             $table->decimal('shipping', 8, 2)->default(0);
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

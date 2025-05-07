@@ -2,9 +2,6 @@
 
 @section('content')
 <div class="container mt-4">
-
-
-
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
     @endif
@@ -14,6 +11,7 @@
             <button class="btn btn-danger mb-3" id="addCategory">
                 <i class="fas fa-plus"></i> Add Category
             </button>
+
             <div class="d-flex justify-content-between mb-3">
                 <div>
                     Show
@@ -25,6 +23,7 @@
                     </select>
                     entries
                 </div>
+
                 <div class="btn-group">
                     <button class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-file-excel"></i> Excel
@@ -39,11 +38,10 @@
                         <i class="fas fa-sync"></i> Reload
                     </button>
                 </div>
+
                 <div class="d-flex">
-                    <span>Search:</span>
-                    <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" placeholder="Search category...">
-                    </div>
+                    <span class="me-2">Search:</span>
+                    <input type="text" id="categorySearch" class="form-control form-control-sm" placeholder="Search category...">
                 </div>
             </div>
 
@@ -51,14 +49,14 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center fw-normal">Category Code</th>
-                            <th class="text-center fw-normal">Category Name</th>
-                            <th class="text-center fw-normal">Product Count</th>
-                            <th class="text-center fw-normal">Actions</th>
+                            <th class="text-center fw-medium">Category Code</th>
+                            <th class="text-center fw-medium">Category Name</th>
+                            <th class="text-center fw-medium">Product Count</th>
+                            <th class="text-center fw-medium">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @if(isset($categories) && count($categories) > 0)
+                    <tbody id="categoryTableBody">
+                        @if($categories->count() > 0)
                             @foreach ($categories as $category)
                                 <tr>
                                     <td class="text-center">{{ $category->category_code }}</td>
@@ -81,7 +79,6 @@
                                             </button>
                                         </form>
                                     </td>
-
                                 </tr>
                             @endforeach
                         @else
@@ -94,18 +91,11 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>Showing 0 to 0 of 0 entries</div>
                 <div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    Showing {{ $categories->firstItem() ?? 0 }} to {{ $categories->lastItem() ?? 0 }} of {{ $categories->total() ?? 0 }} entries
+                </div>
+                <div>
+                    {{ $categories->links() }}
                 </div>
             </div>
         </div>
@@ -113,8 +103,26 @@
 </div>
 
 <script>
-    document.getElementById('addCategory').addEventListener('click', function() {
+    document.getElementById('addCategory').addEventListener('click', function () {
         window.location.href = "{{ route('categories.create') }}";
     });
+
+    document.getElementById('categorySearch').addEventListener('keyup', function () {
+        let searchValue = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#categoryTableBody tr');
+
+        rows.forEach(function (row) {
+            let code = row.cells[0]?.textContent.toLowerCase();
+            let name = row.cells[1]?.textContent.toLowerCase();
+
+            // Check if either category code or category name includes the search term
+            if (code.includes(searchValue) || name.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
 </script>
+
 @endsection

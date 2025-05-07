@@ -7,9 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class StockAdjustmentSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+
     public function run(): void
     {
         DB::table('stock_adjustments')->insert([

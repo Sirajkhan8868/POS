@@ -12,128 +12,121 @@
                     <span class="input-group-text bg-light border-end-0">
                         <i class="fas fa-search text-muted"></i>
                     </span>
-                    <input type="search" class="form-control border-start-0" placeholder="Type product name or code..." aria-label="Search" name="search">
+                    <input type="search" class="form-control border-start-0" placeholder="Type product name or code..." aria-label="Search" name="search" id="product-search">
+                    <button type="button" id="search-btn" class="btn btn-outline-secondary">Search</button>
                 </div>
             </div>
         </div>
 
         <div class="border p-4 rounded bg-white">
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="reference" class="form-label">Reference <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" name="reference" id="reference" value="QT" required>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="reference" class="form-label">Reference <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="reference" id="reference" value="QT" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="customer" class="form-label">Customer <span class="text-danger">*</span></label>
+                    <select name="customer_id" id="customer" class="form-control" required>
+                        <option value="">-- Select Customer --</option>
+                        @foreach($customers as $customer)
+                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="date" id="date" required>
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="customer" class="form-label">Customer <span class="text-danger">*</span></label>
-                <select name="customer_id" id="customer" class="form-control" required>
-                    <option value="">-- Select Customer --</option>
-                    @foreach($customers as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                    @endforeach
-                </select>
+
+            <div class="card mb-3">
+                <div class="card-body p-0">
+                    <table class="table table-bordered mb-0">
+                        <thead class="bg-secondary text-white">
+                            <tr>
+                                <th style="font-weight: medium;">Product</th>
+                                <th style="font-weight: medium;">Net Unit Price</th>
+                                <th style="font-weight: medium;">Stock</th>
+                                <th style="font-weight: medium;">Quantity</th>
+                                <th style="font-weight: medium;">Discount</th>
+                                <th style="font-weight: medium;">Tax</th>
+                                <th style="font-weight: medium;">Sub Total</th>
+                                <th style="font-weight: medium;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list">
+                            <tr id="no-products-row">
+                                <td colspan="8" class="text-center">Please search & select products!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
-                <input type="date" class="form-control" name="date" id="date" required>
-            </div>
-        </div>
 
-
-
-        <div class="card mb-3">
-            <div class="card-body p-0">
-                <table class="table table-bordered mb-0">
-                    <thead class="bg-secondary  text-white ">
-                        <tr>
-                            <th style="font-weight: medium;">Product</th>
-                            <th style="font-weight: medium;">Net Unit Price</th>
-                            <th style="font-weight: medium;">Stock</th>
-                            <th style="font-weight: medium;">Quantity</th>
-                            <th style="font-weight: medium;">Discount</th>
-                            <th style="font-weight: medium;">Tax</th>
-                            <th style="font-weight: medium;">Sub Total</th>
-                            <th style="font-weight: medium;">Action</th>
-                        </tr>
-
-                    </thead>
-                    <tbody id="product-list">
-                        <tr id="no-products-row">
-                            <td colspan="8" class="text-center">Please search & select products!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-
-        <div class="row mb-3">
-            <div class="col-md-8">
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-6 text-start fw-bold">Tax (0%)</div>
-                            <div class="col-6 text-end">(+) PKR<span id="tax-amount">0.00</span></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6 text-start fw-bold">Discount (0%)</div>
-                            <div class="col-6 text-end">(-) PKR<span id="discount-amount">0.00</span></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-6 text-start fw-bold">Shipping</div>
-                            <div class="col-6 text-end">(+) PKR<span id="shipping-amount">0.00</span></div>
-                        </div>
-                        <hr>
-                        <div class="row mb-2">
-                            <div class="col-6 text-start fw-normal fw-bold">Grand Total</div>
-                            <div class="col-6 text-end fw-bold">(=) PKR<span id="grand-total">0.00</span></div>
+            <div class="row mb-3">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-6 text-start fw-bold">Tax (0%)</div>
+                                <div class="col-6 text-end">(+) PKR<span id="tax-amount">0.00</span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6 text-start fw-bold">Discount (0%)</div>
+                                <div class="col-6 text-end">(-) PKR<span id="discount-amount">0.00</span></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6 text-start fw-bold">Shipping</div>
+                                <div class="col-6 text-end">(+) PKR<span id="shipping-amount">0.00</span></div>
+                            </div>
+                            <hr>
+                            <div class="row mb-2">
+                                <div class="col-6 text-start fw-normal fw-bold">Grand Total</div>
+                                <div class="col-6 text-end fw-bold">(=) PKR<span id="grand-total">0.00</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="tax_percentage" class="form-label">Tax (%)</label>
-                <input type="number" class="form-control" name="tax_percentage" id="tax_percentage" min="0" step="0.01" value="0">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="tax_percentage" class="form-label">Tax (%)</label>
+                    <input type="number" class="form-control" name="tax_percentage" id="tax_percentage" min="0" step="0.01" value="0">
+                </div>
+                <div class="col-md-4">
+                    <label for="discount_percentage" class="form-label">Discount (%)</label>
+                    <input type="number" class="form-control" name="discount_percentage" id="discount_percentage" min="0" step="0.01" value="0">
+                </div>
+                <div class="col-md-4">
+                    <label for="shipping" class="form-label">Shipping</label>
+                    <input type="number" class="form-control" name="shipping" id="shipping" min="0" step="0.01" value="0">
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="discount_percentage" class="form-label">Discount (%)</label>
-                <input type="number" class="form-control" name="discount_percentage" id="discount_percentage" min="0" step="0.01" value="0">
+
+            <div class="col-md-4 mb-3">
+                <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                <select name="status" id="status" class="form-control" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
             </div>
-            <div class="col-md-4">
-                <label for="shipping" class="form-label">Shipping</label>
-                <input type="number" class="form-control" name="shipping" id="shipping" min="0" step="0.01" value="0">
+            <div class="mb-3">
+                <label for="note" class="form-label">Note (If Needed)</label>
+                <textarea name="note" id="note" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <input type="hidden" name="total_amount" id="total_amount" value="0">
+                <button type="submit" class="btn btn-danger">Create Quotation
+                    <i class="fas fa-check"></i>
+                </button>
             </div>
         </div>
-
-        <div class="col-md-4 mb-3">
-            <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-            <select name="status" id="status" class="form-control" required>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="note" class="form-label">Note (If Needed)</label>
-            <textarea name="note" id="note" class="form-control" rows="4"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <input type="hidden" name="total_amount" id="total_amount" value="0">
-            <button type="submit" class="btn btn-danger">Create Quotation
-                <i class="fas fa-check"></i>
-            </button>
-        </div>
-
-
     </form>
 
-</div>
 </div>
 
 <template id="product-row-template">
@@ -175,8 +168,6 @@
         const productList = document.getElementById('product-list');
         const noProductsRow = document.getElementById('no-products-row');
         const template = document.getElementById('product-row-template');
-        const searchBtn = document.getElementById('search-btn');
-        const productSearch = document.getElementById('product-search');
 
         const taxPercentageInput = document.getElementById('tax_percentage');
         const discountPercentageInput = document.getElementById('discount_percentage');
@@ -264,9 +255,8 @@
             calculateRowTotal(productList.lastElementChild);
         }
 
-        searchBtn.addEventListener('click', function() {
-            const searchTerm = productSearch.value.toLowerCase();
-
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('product-search').value.toLowerCase();
             const foundProducts = products.filter(product =>
                 product.name.toLowerCase().includes(searchTerm) ||
                 (product.code && product.code.toLowerCase().includes(searchTerm))
@@ -274,7 +264,7 @@
 
             if (foundProducts.length > 0) {
                 addProductRow(foundProducts[0]);
-                productSearch.value = '';
+                document.getElementById('product-search').value = '';
             } else {
                 alert('No products found matching your search criteria.');
             }
@@ -286,4 +276,5 @@
     });
 </script>
 @endpush
+
 @endsection

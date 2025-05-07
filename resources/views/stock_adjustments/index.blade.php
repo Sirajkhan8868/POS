@@ -2,9 +2,6 @@
 
 @section('content')
 <div class="container mt-4">
-
-
-
     @if(session('success'))
         <div class="alert alert-success mt-2">{{ session('success') }}</div>
     @endif
@@ -12,7 +9,7 @@
     <div class="card">
         <div class="card-body">
             <button class="btn btn-danger mb-3" id="addStockAdjustment">
-                <i class="fas fa-plus"></i> Add  Adjustment
+                <i class="fas fa-plus"></i> Add Adjustment
             </button>
             <div class="d-flex justify-content-between mb-3">
                 <div>
@@ -58,54 +55,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($quotations) && count($quotations) > 0)
-                            @foreach($quotations as $quotation)
+                        @forelse($adjustments as $adjustment)
                             <tr>
-                                <td>{{ $quotation->date }}</td>
-                                <td>{{ $quotation->reference }}</td>
-                                <td>{{ $quotation->products_count ?? 'N/A' }}</td>
+                                <td class="text-center">{{ $adjustment->date }}</td>
+                                <td class="text-center">{{ $adjustment->reference }}</td>
+                                <td class="text-center">{{ $adjustment->items->count() }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('quotations.show', $quotation) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('stock-adjustments.edit', $adjustment) }}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <a href="{{ route('stock-adjustments.show', $adjustment) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
 
-                                    <form action="{{ route('quotations.destroy', $quotation) }}" method="POST" style="display:inline;">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this quotation?')">
+                                    <form action="{{ route('stock-adjustments.destroy', $adjustment) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
-
-                            @endforeach
-                        @else
+                        @empty
                             <tr>
                                 <td colspan="4" class="text-center">No data available in table</td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>Showing 0 to 0 of 0 entries</div>
-                <div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-end mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     document.getElementById('addStockAdjustment').addEventListener('click', function() {
         window.location.href = "{{ route('stock-adjustments.create') }}";

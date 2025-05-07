@@ -22,22 +22,8 @@ class CustomerSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'customer_name' => 'Sara Ahmed',
-                'email' => 'sara.ahmed@example.com',
-                'phone' => '03111234567',
-                'address' => 'Karachi, Pakistan',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'customer_name' => 'Usman Raza',
-                'email' => 'usman.raza@example.com',
-                'phone' => '03211234567',
-                'address' => 'Islamabad, Pakistan',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+
+
         ]);
     }
 }

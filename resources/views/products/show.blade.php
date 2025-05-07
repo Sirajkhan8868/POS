@@ -1,58 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container py-4">
+    <a href="{{ route('products.index') }}" class="btn btn-outline-primary mb-4">
+        <i class="fas fa-arrow-left"></i> Back to Products
+    </a>
 
-<div class="container mt-5">
-
-    <a href="{{ route('products.index') }}" class="btn btn-secondary mb-3"><i class="fas fa-arrow-left"></i> Back to Product List</a>
-
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">{{ $product->product_name }}</h4>
-        </div>
-
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <p><strong>Product Code:</strong> <span class="text-muted">{{ $product->product_code }}</span></p>
-                    <p><strong>Category:</strong> <span class="text-muted">{{ $product->category->category_name ?? 'N/A' }}</span></p>
-                    <p><strong>Unit:</strong> <span class="text-muted">{{ $product->unit->name ?? 'N/A' }}</span></p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded-4 border-0">
+                <div class="card-header bg-primary text-white rounded-top-4">
+                    <h5 class="mb-0">
+                        <i class="fas fa-box-open me-2"></i> Product Details
+                    </h5>
                 </div>
+                <div class="card-body bg-light">
+                    <div class="mb-4 text-center">
+                        <h4 class="fw-bold">{{ $product->product_name }}</h4>
+                        <span class="badge bg-secondary">{{ $product->product_code }}</span>
+                    </div>
 
-                <div class="col-md-6 mb-3">
-                    <p><strong>Cost:</strong> <span class="text-muted">{{ $product->cost }}</span></p>
-                    <p><strong>Price:</strong> <span class="text-muted">{{ $product->price }}</span></p>
-                    <p><strong>Quantity:</strong> <span class="text-muted">{{ $product->quantity }}</span></p>
-                    <p><strong>Alert Quantity:</strong> <span class="text-muted">{{ $product->alert_quantity }}</span></p>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Category:</strong>
+                            <div>{{ $product->category->category_name ?? 'N/A' }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Tax Type:</strong>
+                            <div>{{ $product->tax_type ?? 'N/A' }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Cost:</strong>
+                            <div>Rs. {{ number_format($product->cost, 2) ?? 'N/A' }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Price:</strong>
+                            <div>Rs. {{ number_format($product->price, 2) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Quantity:</strong>
+                            <div>{{ $product->quantity }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Unit:</strong>
+                            <div>{{ $product->unit->name ?? 'N/A' }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <strong>Note:</strong>
+                        <div class="text-muted">{{ $product->note ?? 'No additional notes.' }}</div>
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <p><strong>Tax (%):</strong> <span class="text-muted">{{ $product->tax }}</span></p>
-                    <p><strong>Tax Type:</strong> <span class="text-muted">{{ $product->tax_type }}</span></p>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <p><strong>Note:</strong></p>
-                    <p class="text-muted">{{ $product->note ?? 'No notes available' }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-footer bg-light d-flex ">
-            <a href="{{ route('products.edit', $product) }}" class="btn btn-warning btn-sm m-2">
-                <i class="fas fa-edit"></i> Edit Product
-            </a>
-            <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm m-2" onclick="return confirm('Are you sure you want to delete this product?')">
-                    <i class="fas fa-trash-alt"></i> Delete Product
-                </button>
-            </form>
         </div>
     </div>
 </div>
-
 @endsection
