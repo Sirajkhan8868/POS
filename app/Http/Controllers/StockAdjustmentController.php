@@ -31,6 +31,7 @@ class StockAdjustmentController extends Controller
             'type.*' => 'required|in:increase,decrease',
         ]);
 
+
         $adjustment = StockAdjustment::create([
             'reference' => $request->reference,
             'date' => $request->date,
@@ -38,23 +39,23 @@ class StockAdjustmentController extends Controller
         ]);
 
         foreach ($request->product_id as $index => $productId) {
+            $quantity = $request->quantity[$index];
+            $type = $request->type[$index];
+
             StockAdjustmentItem::create([
                 'adjustment_id' => $adjustment->id,
                 'product_id' => $productId,
                 'stock' => $request->stock[$index] ?? 0,
                 'code' => $request->code[$index] ?? null,
-                'quantity' => $request->quantity[$index],
-                'type' => $request->type[$index],
+                'quantity' => $quantity,
+                'type' => $type,
             ]);
 
             $product = Product::findOrFail($productId);
-            if ($product) {
-                $product->stock += ($request->type[$index] === 'increase')
-                    ? $request->quantity[$index]
-                    : -$request->quantity[$index];
-                $product->save();
-            }
+            $product->stock += ($type === 'increase') ? $quantity : -$quantity;
+            $product->save();
         }
+
 
         return redirect()->route('stock-adjustments.index')->with('success', 'Stock Adjustment created successfully.');
     }
@@ -67,12 +68,11 @@ class StockAdjustmentController extends Controller
 
     public function edit(StockAdjustment $stockAdjustment)
     {
-
         $stockAdjustment->load('items');
         $products = Product::all();
         return view('stock_adjustments.edit', compact('stockAdjustment', 'products'));
-
     }
+
     public function update(Request $request, StockAdjustment $stockAdjustment)
     {
         $request->validate([
@@ -84,11 +84,9 @@ class StockAdjustmentController extends Controller
         ]);
 
         foreach ($stockAdjustment->items as $item) {
-            $product = Product::findOrFail($item->product_id); // Ensures the product exists
-            if ($product) {
-                $product->stock += ($item->type === 'increase') ? -$item->quantity : $item->quantity;
-                $product->save();
-            }
+            $product = Product::findOrFail($item->product_id);
+            $product->stock += ($item->type === 'increase') ? -$item->quantity : $item->quantity;
+            $product->save();
         }
 
         $stockAdjustment->items()->delete();
@@ -100,22 +98,21 @@ class StockAdjustmentController extends Controller
         ]);
 
         foreach ($request->product_id as $index => $productId) {
+            $quantity = $request->quantity[$index];
+            $type = $request->type[$index];
+
             StockAdjustmentItem::create([
                 'adjustment_id' => $stockAdjustment->id,
                 'product_id' => $productId,
                 'stock' => $request->stock[$index] ?? 0,
                 'code' => $request->code[$index] ?? null,
-                'quantity' => $request->quantity[$index],
-                'type' => $request->type[$index],
+                'quantity' => $quantity,
+                'type' => $type,
             ]);
 
-            $product = Product::findOrFail($productId); // Ensures the product exists
-            if ($product) {
-                $product->stock += ($request->type[$index] === 'increase')
-                    ? $request->quantity[$index]
-                    : -$request->quantity[$index];
-                $product->save();
-            }
+            $product = Product::findOrFail($productId);
+            $product->stock += ($type === 'increase') ? $quantity : -$quantity;
+            $product->save();
         }
 
         return redirect()->route('stock-adjustments.index')->with('success', 'Stock Adjustment updated successfully.');
@@ -124,11 +121,9 @@ class StockAdjustmentController extends Controller
     public function destroy(StockAdjustment $stockAdjustment)
     {
         foreach ($stockAdjustment->items as $item) {
-            $product = Product::findOrFail($item->product_id); // Ensures the product exists
-            if ($product) {
-                $product->stock += ($item->type === 'increase') ? -$item->quantity : $item->quantity;
-                $product->save();
-            }
+            $product = Product::findOrFail($item->product_id);
+            $product->stock += ($item->type === 'increase') ? -$item->quantity : $item->quantity;
+            $product->save();
         }
 
         $stockAdjustment->items()->delete();

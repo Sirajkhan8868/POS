@@ -16,24 +16,7 @@ class PermissionSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'name'   => 'edit',
-                'action' => 'edit records',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name'   => 'delete',
-                'action' => 'delete records',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name'   => 'view',
-                'action' => 'view records',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+
         ]);
     }
 }

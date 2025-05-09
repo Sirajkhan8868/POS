@@ -10,7 +10,6 @@ class ProductSeeder extends Seeder
 {
     public function run()
     {
-        // Disable foreign key checks temporarily
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('products')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -32,22 +31,7 @@ class ProductSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
-                'product_name' => 'Product B',
-                'product_code' => 'B002',
-                'category_id' => 2,
-                'barcode_symbology' => 'UPC',
-                'cost' => 12.50,
-                'price' => 25.00,
-                'quantity' => 200,
-                'alert_quantity' => 15,
-                'tax' => 18.00,
-                'tax_type' => 'percentage',
-                'unit_id' => 2,
-                'note' => 'Sample product B',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
+
         ]);
     }
 }

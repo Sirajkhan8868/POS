@@ -16,18 +16,7 @@ class RoleSeeder extends Seeder
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
-            [
-                'name'        => 'Manager',
-                'permissions' => '["edit", "view"]',
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ],
-            [
-                'name'        => 'User',
-                'permissions' => '["view"]',
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ],
+
         ]);
     }
 }

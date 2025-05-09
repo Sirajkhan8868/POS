@@ -24,60 +24,10 @@ class UnitSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'id' => 2,
-                'name' => 'Gram',
-                'short_name' => 'g',
-                'operator' => 'multiply',
-                'operator_value' => 1000,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 3,
-                'name' => 'Meter',
-                'short_name' => 'm',
-                'operator' => 'multiply',
-                'operator_value' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 4,
-                'name' => 'Centimeter',
-                'short_name' => 'cm',
-                'operator' => 'multiply',
-                'operator_value' => 100,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 5,
-                'name' => 'Liter',
-                'short_name' => 'L',
-                'operator' => 'multiply',
-                'operator_value' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 6,
-                'name' => 'Milliliter',
-                'short_name' => 'mL',
-                'operator' => 'multiply',
-                'operator_value' => 1000,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 7,
-                'name' => 'Piece',
-                'short_name' => 'pc',
-                'operator' => null,
-                'operator_value' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+
+
+
+
         ]);
     }
 }

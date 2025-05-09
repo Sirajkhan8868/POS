@@ -556,60 +556,6 @@
         </div>
       </div>
     </nav>
-
-    <div class="container-fluid">
-      <div class="row mb-4">
-        <div class="col-md-3 col-sm-6 mb-3">
-          <div class="card stat-card bg-primary text-white">
-            <div class="card-body">
-              <div class="icon">
-                <i class="fas fa-users"></i>
-              </div>
-              <h5 class="card-title">Users</h5>
-              <h2 class="stat-number">2,845</h2>
-              <p class="stat-change"><i class="fas fa-arrow-up"></i> 12.5%</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-          <div class="card stat-card bg-success text-white">
-            <div class="card-body">
-              <div class="icon">
-                <i class="fas fa-dollar-sign"></i>
-              </div>
-              <h5 class="card-title">Revenue</h5>
-              <h2 class="stat-number">$24,582</h2>
-              <p class="stat-change"><i class="fas fa-arrow-up"></i> 8.3%</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-          <div class="card stat-card bg-warning text-white">
-            <div class="card-body">
-              <div class="icon">
-                <i class="fas fa-shopping-cart"></i>
-              </div>
-              <h5 class="card-title">Orders</h5>
-              <h2 class="stat-number">1,253</h2>
-              <p class="stat-change"><i class="fas fa-arrow-down"></i> 3.7%</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-          <div class="card stat-card bg-danger text-white">
-            <div class="card-body">
-              <div class="icon">
-                <i class="fas fa-chart-line"></i>
-              </div>
-              <h5 class="card-title">Visits</h5>
-              <h2 class="stat-number">45,973</h2>
-              <p class="stat-change"><i class="fas fa-arrow-up"></i> 15.2%</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     @yield('content')
 
   </main>
@@ -619,32 +565,26 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Sidebar toggle functionality
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('backdrop');
       const sidebarToggle = document.getElementById('sidebarToggle');
       const body = document.body;
 
-      // Function to toggle sidebar
       function toggleSidebar() {
         if (window.innerWidth < 768) {
-          // Mobile behavior - show/hide with backdrop
           sidebar.classList.toggle('show');
           backdrop.classList.toggle('show');
         } else {
-          // Desktop behavior - collapse/expand
           body.classList.toggle('sidebar-collapsed');
         }
       }
 
-      // Event listeners
       sidebarToggle.addEventListener('click', toggleSidebar);
       backdrop.addEventListener('click', function() {
         sidebar.classList.remove('show');
         backdrop.classList.remove('show');
       });
 
-      // Handle window resize
       window.addEventListener('resize', function() {
         if (window.innerWidth >= 768) {
           sidebar.classList.remove('show');
@@ -652,7 +592,6 @@
         }
       });
 
-      // Initialize charts if they exist
       const salesCanvas = document.getElementById('salesChart');
       const trafficCanvas = document.getElementById('trafficChart');
 

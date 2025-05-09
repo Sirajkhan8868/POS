@@ -27,11 +27,14 @@
                 <label for="supplier" class="form-label">Supplier <span class="text-danger">*</span></label>
                 <select name="supplier_id" id="supplier" class="form-control" required>
                     <option value="">-- Select Supplier --</option>
-                    @foreach($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                    @endforeach
+                    @forelse($suppliers as $supplier)
+                        <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
+                    @empty
+                        <option value="">No suppliers available</option>
+                    @endforelse
                 </select>
             </div>
+
             <div class="col-md-4">
                 <label for="date" class="form-label">Date <span class="text-danger">*</span></label>
                 <input type="date" class="form-control" name="date" id="date" required>

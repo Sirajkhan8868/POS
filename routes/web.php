@@ -27,7 +27,8 @@ use App\Http\Controllers\{
     UnitController,
     UserController,
     PaymentReportController,
-    ProductsController
+    ProductsController,
+    QuotationItemController
 };
 
 // Home route
@@ -41,6 +42,9 @@ Route::resource('products', ProductsController::class);
 Route::resource('barcodes', BarcodeController::class);
 Route::resource('stock-adjustments', StockAdjustmentController::class);
 Route::resource('quotations', QuotationController::class);
+Route::post('quotations/{quotation}/items', [QuotationItemController::class, 'store'])->name('quotation.items.store');
+Route::put('quotations/{quotation}/items/{item}', [QuotationItemController::class, 'update'])->name('quotation.items.update');
+Route::delete('quotations/{quotation}/items/{item}', [QuotationItemController::class, 'destroy'])->name('quotation.items.destroy');
 Route::resource('purchases', PurchaseController::class);
 Route::resource('purchase-returns', PurchaseReturnController::class);
 Route::resource('sales', SaleController::class);
@@ -72,15 +76,3 @@ Route::get('/sale-return-report', [SaleReturnReportController::class, 'index'])-
 // Additional report routes
 Route::get('/purchase-reports', [PurchaseReportController::class, 'index'])->name('purchase-reports.index');
 Route::get('/sale-reports', [SaleReportController::class, 'index'])->name('sale-reports.index');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

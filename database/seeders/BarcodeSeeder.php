@@ -28,22 +28,8 @@ class BarcodeSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
-                'product_name' => 'Product B',
-                'product_code' => 'B002',
-                'quantity' => 20,
-                'barcode_print' => 'qr_code',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'product_name' => 'Product C',
-                'product_code' => 'C003',
-                'quantity' => 15,
-                'barcode_print' => 'barcode',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]
+
+
         ]);
     }
 }

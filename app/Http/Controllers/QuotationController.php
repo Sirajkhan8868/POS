@@ -3,15 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quotation;
-use App\Models\Product;
+use App\Models\QuotationItem;
 use App\Models\Customer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class QuotationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $quotations = Quotation::with(['customer', 'items'])->get();
+        $search = $request->get('search', '');
+        $quotations = Quotation::when($search, function ($query) use ($search) {
+            return $query->where('reference', 'like', '%' . $search . '%')
+                         ->orWhereHas('customer', function ($query) use ($search) {
+                             $query->where('customer_name', 'like', '%' . $search . '%');
+                         });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
         return view('quotations.index', compact('quotations'));
     }
 
@@ -19,45 +29,47 @@ class QuotationController extends Controller
     {
         $customers = Customer::all();
         $products = Product::all();
-        $latestQuotation = Quotation::latest('id')->first();
-        $nextQuotationNumber = $latestQuotation ? $latestQuotation->id + 1 : 1;
-
-        return view('quotations.create', compact('customers', 'products', 'nextQuotationNumber'));
+        return view('quotations.create', compact('customers', 'products'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'reference' => 'required|unique:quotations,reference',
             'customer_id' => 'required|exists:customers,id',
             'date' => 'required|date',
-            'items' => 'required|array|min:1',
+            'tax' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'shipping' => 'nullable|numeric',
+            'total_amount' => 'required|numeric',
+            'status' => 'required|in:Pending,Approved,Rejected',
+            'note' => 'nullable|string',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|numeric|min:1',
-            'items.*.price' => 'required|numeric|min:0',
+            'items.*.net_unit_price' => 'required|numeric',
+            'items.*.discount' => 'nullable|numeric',
+            'items.*.tax' => 'nullable|numeric',
+            'items.*.subtotal' => 'required|numeric',
         ]);
 
-        $quotation = Quotation::create([
-            'reference' => 'QUO-' . strtoupper(uniqid()),
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'tax' => $request->tax ?? 0,
-            'discount' => $request->discount ?? 0,
-            'shipping' => $request->shipping ?? 0,
-            'total_amount' => $request->total_amount,
-            'status' => $request->status ?? 'Pending',
-            'note' => $request->note,
-        ]);
+        $quotation = Quotation::create($request->only([
+            'reference', 'customer_id', 'date', 'tax', 'discount',
+            'shipping', 'total_amount', 'status', 'note'
+        ]));
 
         foreach ($request->items as $item) {
-            $quotation->items()->create([
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'total' => $item['quantity'] * $item['price'],
-            ]);
+            $quotation->items()->create($item);
         }
 
+        $this->updateTotalAmount($quotation);
+
         return redirect()->route('quotations.index')->with('success', 'Quotation created successfully.');
+    }
+
+    public function show($id)
+    {
+        $quotation = Quotation::with(['customer', 'items.product'])->findOrFail($id);
+        return view('quotations.show', compact('quotation'));
     }
 
     public function edit($id)
@@ -65,51 +77,46 @@ class QuotationController extends Controller
         $quotation = Quotation::with('items')->findOrFail($id);
         $customers = Customer::all();
         $products = Product::all();
-
         return view('quotations.edit', compact('quotation', 'customers', 'products'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
+            'reference' => 'required|unique:quotations,reference,' . $id,
             'customer_id' => 'required|exists:customers,id',
             'date' => 'required|date',
-            'items' => 'required|array|min:1',
+            'tax' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
+            'shipping' => 'nullable|numeric',
+            'total_amount' => 'required|numeric',
+            'status' => 'required|in:Pending,Approved,Rejected',
+            'note' => 'nullable|string',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|numeric|min:1',
-            'items.*.price' => 'required|numeric|min:0',
+            'items.*.net_unit_price' => 'required|numeric',
+            'items.*.discount' => 'nullable|numeric',
+            'items.*.tax' => 'nullable|numeric',
+            'items.*.subtotal' => 'required|numeric',
         ]);
 
         $quotation = Quotation::findOrFail($id);
-        $quotation->update([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'tax' => $request->tax ?? 0,
-            'discount' => $request->discount ?? 0,
-            'shipping' => $request->shipping ?? 0,
-            'total_amount' => $request->total_amount,
-            'status' => $request->status ?? 'Pending',
-            'note' => $request->note,
-        ]);
 
+        $quotation->update($request->only([
+            'reference', 'customer_id', 'date', 'tax', 'discount',
+            'shipping', 'total_amount', 'status', 'note'
+        ]));
+
+        // Delete old items and recreate
         $quotation->items()->delete();
 
         foreach ($request->items as $item) {
-            $quotation->items()->create([
-                'product_id' => $item['product_id'],
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'total' => $item['quantity'] * $item['price'],
-            ]);
+            $quotation->items()->create($item);
         }
 
-        return redirect()->route('quotations.index')->with('success', 'Quotation updated successfully.');
-    }
+        $this->updateTotalAmount($quotation);
 
-    public function show($id)
-    {
-        $quotation = Quotation::with(['customer', 'items.product'])->findOrFail($id);
-        return view('quotations.show', compact('quotation'));
+        return redirect()->route('quotations.index')->with('success', 'Quotation updated successfully.');
     }
 
     public function destroy($id)
@@ -119,5 +126,22 @@ class QuotationController extends Controller
         $quotation->delete();
 
         return redirect()->route('quotations.index')->with('success', 'Quotation deleted successfully.');
+    }
+
+    private function updateTotalAmount(Quotation $quotation)
+    {
+        $totalAmount = $quotation->items->sum(function ($item) {
+            $subtotal = $item->quantity * $item->net_unit_price;
+            $discount = $item->discount ? $subtotal * ($item->discount / 100) : 0;
+            $tax = $item->tax ? ($subtotal - $discount) * ($item->tax / 100) : 0;
+            return $subtotal - $discount + $tax;
+        });
+
+        $totalAmount += $quotation->shipping ?? 0;
+        $totalAmount -= $quotation->discount ?? 0;
+        $totalAmount += $quotation->tax ?? 0;
+
+        $quotation->total_amount = round($totalAmount, 2);
+        $quotation->save();
     }
 }
